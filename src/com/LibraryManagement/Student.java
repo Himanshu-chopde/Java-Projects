@@ -478,6 +478,22 @@ public class Student extends JFrame {
 				textStudentContactNumber.setText("");
 				textStudentDateOfBirth.setCalendar(null);
 				comboBoxStudentId.setSelectedIndex(0);
+				
+				if(btnSave.getText().equals("Add")) {
+					lblStudentFirstName.setVisible(true);
+					lblStudentLastName.setVisible(true);
+					lblStudentDepartment.setVisible(true);
+					lblStudentContactNumber.setVisible(true);
+					lblStudentDateOfBirth.setVisible(true);
+					textStudentId.setVisible(true);
+					textStudentFirstName.setVisible(true);
+					textStudentLastName.setVisible(true);
+					comboBoxStudentDepartment.setVisible(true);
+					textStudentContactNumber.setVisible(true);
+					textStudentDateOfBirth.setVisible(true);
+					btnClear.setVisible(true);
+					btnSave.setVisible(true);
+				}
 
 				lblContactNumberError.setText(" ");
 			}
