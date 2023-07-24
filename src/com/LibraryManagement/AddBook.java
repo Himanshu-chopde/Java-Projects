@@ -91,11 +91,8 @@ public class AddBook extends JFrame {
 			return false;
 		}
 		
-		try {
-			
-		} catch (Exception e) {
+		if(comboBoxEdition.getSelectedIndex()>0)
 			bookEdition = Integer.parseInt(edition);
-		}
 		try {
 			bookQuantity = Integer.parseInt(quantity);
 		} catch (Exception e) {
@@ -116,7 +113,7 @@ public class AddBook extends JFrame {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
 					"Himanshu@15");
-			String sql = "select * from booklist where id=?";
+			String sql = "select * from booklist where b_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, bookId);
 			ResultSet rs = stmt.executeQuery();
@@ -138,7 +135,7 @@ public class AddBook extends JFrame {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem","root","Himanshu@15");
-			String sql="insert into booklist values (?,?,?,?,?,?,?)";
+			String sql="insert into booklist values (?,?,?,?,?,?,?,?)";
 			PreparedStatement stmt=con.prepareStatement(sql);
 			stmt.setString(1, bookId);
 			stmt.setString(2, bookName);
@@ -146,7 +143,8 @@ public class AddBook extends JFrame {
 			stmt.setString(4, bookPublisher);
 			stmt.setInt(5, bookEdition);
 			stmt.setInt(6, bookQuantity);
-			stmt.setString(7, addedDate);
+			stmt.setInt(7, 0);
+			stmt.setString(8, addedDate);
 
 			int f = stmt.executeUpdate();
 			if(f > 0) 
