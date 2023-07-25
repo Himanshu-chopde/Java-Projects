@@ -323,6 +323,15 @@ public class Student extends JFrame {
 				e.printStackTrace();
 			}
 		}
+		
+		//allowing text fields to be editable
+		void setFieldEditable(boolean flag) {
+			textStudentFirstName.setEditable(flag);
+			textStudentLastName.setEditable(flag);
+			comboBoxStudentDepartment.setEnabled(flag);
+			textStudentContactNumber.setEditable(flag);
+			textStudentDateOfBirth.setEnabled(flag);
+		}
 
 	
 	/**
@@ -622,6 +631,7 @@ public class Student extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setFieldEditable(true);
 				comboBoxStudentId.setVisible(false);
 				lblStudentId.setVisible(true);
 				lblStudentFirstName.setVisible(true);
@@ -648,6 +658,7 @@ public class Student extends JFrame {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setFieldEditable(true);
 				lblStudentId.setVisible(true);
 				lblStudentFirstName.setVisible(false);
 				lblStudentLastName.setVisible(false);
@@ -679,6 +690,7 @@ public class Student extends JFrame {
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setFieldEditable(false);
 				lblStudentId.setVisible(true);
 				lblStudentFirstName.setVisible(false);
 				lblStudentLastName.setVisible(false);
