@@ -5,7 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -15,6 +17,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -30,6 +33,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class IssueBook extends JFrame {
@@ -64,6 +69,10 @@ public class IssueBook extends JFrame {
 	private JButton btnCloseTable;
 	private JButton btnSelectRecordFromTable;
 	private int studentIssuedBooks, bookIssuedBooks, bookQuantity;
+	private boolean flag;
+	private JTextField textSearchInTable;
+	private JLabel lblSearchInTable;
+	private DefaultTableModel model;
 
 	/**
 	 * Launch the application.
@@ -87,6 +96,8 @@ public class IssueBook extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) tableStudent.getModel();
 		model.setColumnCount(0);
 		model.setRowCount(0);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		comboBoxStudentId.removeAllItems();
 		comboBoxStudentId.addItem("");
 		try {
@@ -99,8 +110,9 @@ public class IssueBook extends JFrame {
 			ResultSet rs = stmt.executeQuery();
 
 			String[] columnNames = {"Student Id", "First Name", "Last Name", "Department", "Contact Number", "Books Issued"};
+			model.setColumnIdentifiers(columnNames);
 			for(int i=0; i < columnNames.length; i++) {
-				model.setColumnIdentifiers(columnNames);
+				tableStudent.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
 			tableStudent.getColumnModel().getColumn(3).setPreferredWidth(300);
 			String[] row = new String[6];
@@ -123,9 +135,14 @@ public class IssueBook extends JFrame {
 		}
 	}
 	
-	// inserting book details into comboBoxStudentId
+	// inserting book details into table and comboBoxBookId
 	@SuppressWarnings("unchecked")
 	void getBookDataFromDatabase() {
+		model = (DefaultTableModel) tableStudent.getModel();
+		model.setColumnCount(0);
+		model.setRowCount(0);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		comboBoxBookId.removeAllItems();
 		comboBoxBookId.addItem("");
 		try {
@@ -133,12 +150,26 @@ public class IssueBook extends JFrame {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
 					"Himanshu@15");
-			String sql = "select * from booklist";
+			String sql = "select * from booklist where b_quantity > 0;";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
+			
+			String[] columnNames = {"Book Id", "Book Name", "Author", "Publisher", "Quantity", "Books Issued"};
+			model.setColumnIdentifiers(columnNames);
+			for(int i=0; i < columnNames.length; i++) {
+				tableStudent.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			}
+			String[] row = new String[6];
 
 			while (rs.next()) {
 				comboBoxBookId.addItem(rs.getString(1));
+				row[0] = rs.getString(1);
+				row[1] = rs.getString(2);
+				row[2] = rs.getString(3);
+				row[3] = rs.getString(4);
+				row[4] = rs.getString(6);
+				row[5] = rs.getString(7);
+				model.addRow(row);
 			}
 
 			stmt.close();
@@ -284,12 +315,41 @@ public class IssueBook extends JFrame {
 			}
 			return false;
 		}
+		
+		
+		//checking duplicate values
+		boolean checkDuplicate() {
+			String studentId = (String) comboBoxStudentId.getItemAt(comboBoxStudentId.getSelectedIndex());
+			String bookId = (String) comboBoxBookId.getItemAt(comboBoxBookId.getSelectedIndex());
+			try {
+
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
+						"Himanshu@15");
+				String sql = "select * from issuedbooks where studentid = ? and bookid = ?";
+				PreparedStatement stmt = con.prepareStatement(sql);
+				stmt.setString(1, studentId);
+				stmt.setString(2, bookId);
+				ResultSet rs = stmt.executeQuery();
+				if (rs.next()) {
+					return false;
+				}
+				stmt.close();
+				con.close();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "An error occurred!\nRecord could not be fetched from database.");
+				e.printStackTrace();
+			}
+			return true;
+		}
 	
 	void setVisibleTable(boolean f) {
 		tableStudent.setVisible(f);
 		scrollPaneStudent.setVisible(f);
 		btnCloseTable.setVisible(f);
 		btnSelectRecordFromTable.setVisible(f);
+		textSearchInTable.setVisible(f);
+		lblSearchInTable.setVisible(f);
 		
 		lblStudentId.setVisible(!f);
 		lblStudentFirstName.setVisible(!f);
@@ -315,6 +375,14 @@ public class IssueBook extends JFrame {
 		textIssueDate.setVisible(!f);
 		
 		btnIssue.setVisible(!f);
+	}
+	
+	//search records in table
+	private void searchTable(String query) {
+		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<DefaultTableModel>(model);
+		tableStudent.setRowSorter(trs);
+		
+		trs.setRowFilter(RowFilter.regexFilter(query));
 	}
 
 	/**
@@ -407,8 +475,14 @@ public class IssueBook extends JFrame {
 						JOptionPane.showMessageDialog(null, "Please enter book details");
 					}
 					else {
-						JOptionPane.showConfirmDialog(null, "Do you want to issue the Book?", "issue book confirmation", JOptionPane.YES_NO_OPTION);
-						insertDetails();
+						if(checkDuplicate()) {
+							int result = JOptionPane.showConfirmDialog(null, "Do you want to issue the Book?", "issue book confirmation", JOptionPane.YES_NO_OPTION);
+							if(result == JOptionPane.YES_NO_OPTION)
+								insertDetails();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "student has already issued this book");
+						}
 					}
 				}
 			}
@@ -525,7 +599,7 @@ public class IssueBook extends JFrame {
 		AutoCompleteDecorator.decorate(comboBoxBookId);
 		
 		scrollPaneStudent = new JScrollPane();
-		scrollPaneStudent.setBounds(40, 11, 1028, 471);
+		scrollPaneStudent.setBounds(40, 47, 1028, 481);
 		scrollPaneStudent.setVisible(false);
 		scrollPaneStudent.setForeground(new Color(0, 0, 0));
 		scrollPaneStudent.setBackground(new Color(255, 255, 255));
@@ -535,9 +609,10 @@ public class IssueBook extends JFrame {
 		tableStudent = new JTable();
 		tableStudent.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		scrollPaneStudent.setViewportView(tableStudent);
+		tableStudent.setRowHeight(30);
 		
 		btnCloseTable = new JButton("");
-		btnCloseTable.setBounds(510, 482, 45, 34);
+		btnCloseTable.setBounds(1023, 11, 45, 34);
 		btnCloseTable.setIcon(new ImageIcon(IssueBook.class.getResource("/com/images/XMark.png")));
 		btnCloseTable.setForeground(new Color(255, 0, 0));
 		btnCloseTable.addActionListener(new ActionListener() {
@@ -551,17 +626,40 @@ public class IssueBook extends JFrame {
 		panel_1.add(btnCloseTable);
 		
 		btnSelectRecordFromTable = new JButton("");
-		btnSelectRecordFromTable.setBounds(555, 482, 45, 34);
+		btnSelectRecordFromTable.setBounds(979, 11, 45, 34);
 		btnSelectRecordFromTable.setVisible(false);
 		btnSelectRecordFromTable.setIcon(new ImageIcon(IssueBook.class.getResource("/com/images/checkmark.png")));
 		btnSelectRecordFromTable.setForeground(new Color(0, 255, 0));
 		btnSelectRecordFromTable.setBackground(new Color(255, 255, 255));
 		btnSelectRecordFromTable.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		panel_1.add(btnSelectRecordFromTable);
+		
+		textSearchInTable = new JTextField();
+		textSearchInTable.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				searchTable(textSearchInTable.getText());
+			}
+		});
+		textSearchInTable.setVisible(false);
+		textSearchInTable.setBounds(750, 11, 229, 34);
+		panel_1.add(textSearchInTable);
+		textSearchInTable.setColumns(10);
+		
+		lblSearchInTable = new JLabel("");
+		lblSearchInTable.setVisible(false);
+		lblSearchInTable.setBackground(new Color(255, 255, 255));
+		lblSearchInTable.setIcon(new ImageIcon(IssueBook.class.getResource("/com/images/search.png")));
+		lblSearchInTable.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		lblSearchInTable.setBounds(712, 11, 39, 34);
+		panel_1.add(lblSearchInTable);
 		btnSelectRecordFromTable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisibleTable(false);
-				comboBoxStudentId.setSelectedIndex(tableStudent.getSelectedRow()+1);
+				if(flag)
+					comboBoxStudentId.setSelectedIndex(tableStudent.getSelectedRow()+1);
+				else
+					comboBoxBookId.setSelectedIndex(tableStudent.getSelectedRow()+1);
 			}
 		});
 		
@@ -589,6 +687,13 @@ public class IssueBook extends JFrame {
 		contentPane.add(panel);
 		
 		JButton btnHome = new JButton("Home");
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HomePage home=new HomePage();
+				home.setVisible(true);
+				dispose();
+			}
+		});
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnHome.setBackground(new Color(169, 169, 169));
 		btnHome.setBounds(32, 48, 189, 67);
@@ -599,6 +704,7 @@ public class IssueBook extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				getStudentDataFromDatabase();
 				setVisibleTable(true);
+				flag = true;
 			}
 		});
 		btnSelectStudent.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -610,6 +716,8 @@ public class IssueBook extends JFrame {
 		btnSelectBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getBookDataFromDatabase();
+				setVisibleTable(true);
+				flag = false;
 				
 			}
 		});

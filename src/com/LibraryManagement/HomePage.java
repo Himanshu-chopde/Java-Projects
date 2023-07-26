@@ -15,6 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class HomePage extends JFrame {
@@ -37,7 +40,6 @@ public class HomePage extends JFrame {
 		});
 	}
 	
-	private HomePage hp = this;
 	/**
 	 * Create the frame.
 	 */
@@ -73,199 +75,6 @@ public class HomePage extends JFrame {
 		panel_1.setBackground(new Color(211, 211, 211));
 		panel_1.setLayout(null);
 		contentPane.add(panel_1);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2.setBackground(clr);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Color clr = new Color(169,169,169);
-				panel_2.setBackground(clr);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Color clr = new Color(220,220,220);
-				panel_2.setBackground(clr);
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				AddBook frame = new AddBook();
-				frame.setVisible(true);
-				hp.dispose();
-				
-			}
-		});
-		panel_2.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0), new Color(0, 0, 0)));
-		panel_2.setBackground(new Color(169, 169, 169));
-		panel_2.setBounds(277, 34, 189, 113);
-		panel_1.add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Add Book");
-		lblNewLabel.setBounds(0, 11, 189, 91);
-		panel_2.add(lblNewLabel);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/plus.png")));
-		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		
-		JPanel panel_2_1 = new JPanel();
-		panel_2_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_1.setBackground(clr);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Color clr = new Color(169,169,169);
-				panel_2_1.setBackground(clr);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Color clr = new Color(220,220,220);
-				panel_2_1.setBackground(clr);
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_1.setBackground(clr);
-			}
-		});
-		panel_2_1.setLayout(null);
-		panel_2_1.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0), new Color(0, 0, 0)));
-		panel_2_1.setBackground(new Color(169, 169, 169));
-		panel_2_1.setBounds(592, 34, 189, 113);
-		panel_1.add(panel_2_1);
-		
-		JLabel lblIssueBook = new JLabel("Issue Book");
-		lblIssueBook.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/issue_book.png")));
-		lblIssueBook.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIssueBook.setForeground(Color.WHITE);
-		lblIssueBook.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		lblIssueBook.setBounds(0, 11, 189, 91);
-		panel_2_1.add(lblIssueBook);
-		
-		JPanel panel_2_2 = new JPanel();
-		
-		panel_2_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_2.setBackground(clr);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Color clr = new Color(169,169,169);
-				panel_2_2.setBackground(clr);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Color clr = new Color(220,220,220);
-				panel_2_2.setBackground(clr);
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_2.setBackground(clr);
-			}
-		});
-
-		panel_2_2.setLayout(null);
-		panel_2_2.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0), new Color(0, 0, 0)));
-		panel_2_2.setBackground(new Color(169, 169, 169));
-		panel_2_2.setBounds(899, 34, 189, 113);
-		panel_1.add(panel_2_2);
-		
-		JLabel lblReturnBook = new JLabel("Return Book");
-		lblReturnBook.setBounds(0, 11, 189, 91);
-		panel_2_2.add(lblReturnBook);
-		lblReturnBook.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/return_book.png")));
-		lblReturnBook.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReturnBook.setForeground(Color.WHITE);
-		lblReturnBook.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		
-		JPanel panel_2_3 = new JPanel();
-		
-		panel_2_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_3.setBackground(clr);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Color clr = new Color(169,169,169);
-				panel_2_3.setBackground(clr);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Color clr = new Color(220,220,220);
-				panel_2_3.setBackground(clr);
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_3.setBackground(clr);
-			}
-		});
-		
-		panel_2_3.setLayout(null);
-		panel_2_3.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0), new Color(0, 0, 0)));
-		panel_2_3.setBackground(new Color(169, 169, 169));
-		panel_2_3.setBounds(277, 221, 189, 113);
-		panel_1.add(panel_2_3);
-		
-		JLabel lblViewBooks = new JLabel("View Books");
-		lblViewBooks.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/view_books.png")));
-		lblViewBooks.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewBooks.setForeground(Color.WHITE);
-		lblViewBooks.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		lblViewBooks.setBounds(0, 11, 189, 91);
-		panel_2_3.add(lblViewBooks);
-		
-		JPanel panel_2_4 = new JPanel();
-		
-		panel_2_4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_4.setBackground(clr);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Color clr = new Color(169,169,169);
-				panel_2_4.setBackground(clr);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Color clr = new Color(220,220,220);
-				panel_2_4.setBackground(clr);
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_4.setBackground(clr);
-			}
-		});
-
-		panel_2_4.setLayout(null);
-		panel_2_4.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0), new Color(0, 0, 0)));
-		panel_2_4.setBackground(new Color(169, 169, 169));
-		panel_2_4.setBounds(592, 221, 189, 113);
-		panel_1.add(panel_2_4);
-		
-		JLabel lblViewIssuedBooks = new JLabel("View Issued Books");
-		lblViewIssuedBooks.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/view_issued_books.png")));
-		lblViewIssuedBooks.setHorizontalAlignment(SwingConstants.CENTER);
-		lblViewIssuedBooks.setForeground(Color.WHITE);
-		lblViewIssuedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		lblViewIssuedBooks.setBounds(0, 11, 186, 91);
-		panel_2_4.add(lblViewIssuedBooks);
 		
 		JPanel panel_2_5 = new JPanel();
 		
@@ -384,26 +193,52 @@ public class HomePage extends JFrame {
 		lblDeleteAccount.setBounds(0, 11, 189, 91);
 		panel_2_7.add(lblDeleteAccount);
 		
-		JPanel panel_2_8 = new JPanel();
+		JButton btnIssueBook = new JButton("Issue Books");
+		btnIssueBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					IssueBook frame = new IssueBook();
+					frame.setVisible(true);
+					dispose();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnIssueBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnIssueBook.setBackground(new Color(169, 169, 169));
+		btnIssueBook.setBounds(592, 34, 189, 113);
+		panel_1.add(btnIssueBook);
 		
-		panel_2_8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				Color clr = new Color(105,105,105);
-				panel_2_8.setBackground(clr);
+		JButton btnReturnBook = new JButton("Return Books");
+		btnReturnBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReturnBook frame = new ReturnBook();
+				frame.setVisible(true);
+				dispose();
 			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				Color clr = new Color(169,169,169);
-				panel_2_8.setBackground(clr);
+		});
+		btnReturnBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnReturnBook.setBackground(new Color(169, 169, 169));
+		btnReturnBook.setBounds(899, 34, 189, 113);
+		panel_1.add(btnReturnBook);
+		
+		JButton btnIssueBook_1 = new JButton("Add Books");
+		btnIssueBook_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddBook frame = new AddBook();
+				frame.setVisible(true);
+				dispose();
 			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Color clr = new Color(220,220,220);
-				panel_2_8.setBackground(clr);
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
+		});
+		btnIssueBook_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnIssueBook_1.setBackground(new Color(169, 169, 169));
+		btnIssueBook_1.setBounds(277, 34, 189, 113);
+		panel_1.add(btnIssueBook_1);
+		
+		JButton btnSignOut = new JButton("Sign out");
+		btnSignOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				int result;
 				result = JOptionPane.showConfirmDialog(null, "Are you sure, You want to logout?","Logout",JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
@@ -413,20 +248,29 @@ public class HomePage extends JFrame {
 				}
 			}
 		});
-
-		panel_2_8.setLayout(null);
-		panel_2_8.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0), new Color(0, 0, 0)));
-		panel_2_8.setBackground(new Color(169, 169, 169));
-		panel_2_8.setBounds(899, 407, 189, 113);
-		panel_1.add(panel_2_8);
+		btnSignOut.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnSignOut.setBackground(new Color(169, 169, 169));
+		btnSignOut.setBounds(899, 407, 189, 113);
+		panel_1.add(btnSignOut);
 		
-		JLabel lblSignOut = new JLabel("Sign Out");
-		lblSignOut.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/signout.png")));
-		lblSignOut.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSignOut.setForeground(Color.WHITE);
-		lblSignOut.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		lblSignOut.setBounds(0, 11, 189, 91);
-		panel_2_8.add(lblSignOut);
+		JButton btnViewBook = new JButton("View Books");
+		btnViewBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnViewBook.setBackground(new Color(169, 169, 169));
+		btnViewBook.setBounds(277, 221, 189, 113);
+		panel_1.add(btnViewBook);
+		
+		JButton btnReturnBooks = new JButton("Student");
+		btnReturnBooks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Student frame = new Student();
+				frame.setVisible(true);
+				dispose();
+			}
+		});
+		btnReturnBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnReturnBooks.setBackground(new Color(169, 169, 169));
+		btnReturnBooks.setBounds(592, 221, 189, 113);
+		panel_1.add(btnReturnBooks);
 		contentPane.add(panel);
 	}
 }
