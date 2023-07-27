@@ -7,11 +7,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -443,7 +447,7 @@ public class ReturnBook extends JFrame {
 						JOptionPane.showMessageDialog(null, "Please enter book details");
 					}
 					else {
-							int result = JOptionPane.showConfirmDialog(null, "Do you want to issue the Book?", "Return book confirmation", JOptionPane.YES_NO_OPTION);
+							int result = JOptionPane.showConfirmDialog(null, "return the Book?", "Return book confirmation", JOptionPane.YES_NO_OPTION);
 							if(result == JOptionPane.YES_NO_OPTION)
 								removeDetails();
 						
@@ -572,10 +576,26 @@ public class ReturnBook extends JFrame {
 		scrollPaneStudent.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		panel_1.add(scrollPaneStudent);
 		
-		tableStudent = new JTable();
+		tableStudent = new JTable(){
+	         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+	             Component comp = super.prepareRenderer(renderer, row, column);
+	             Color alternateColor = new Color(200, 201, 210);
+	             Color whiteColor = Color.WHITE;
+	             if(!comp.getBackground().equals(getSelectionBackground())) {
+	                Color c = (row % 2 == 0 ? alternateColor : whiteColor);
+	                comp.setBackground(c);
+	                c = null;
+	             }
+	             return comp;
+	          }
+	       };
 		tableStudent.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		scrollPaneStudent.setViewportView(tableStudent);
 		tableStudent.setRowHeight(30);
+		tableStudent.setAutoCreateRowSorter(true);
+		
+		JTableHeader tableHeader = tableStudent.getTableHeader();
+		tableHeader.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
 		btnCloseTable = new JButton("");
 		btnCloseTable.setBounds(1023, 11, 45, 34);

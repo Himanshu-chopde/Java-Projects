@@ -5,15 +5,23 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -33,6 +41,9 @@ import java.util.regex.Pattern;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class Student extends JFrame {
@@ -44,6 +55,7 @@ public class Student extends JFrame {
 	private JTextField textStudentContactNumber;
 	private JDateChooser textStudentDateOfBirth;
 	private JButton btnSave, btnClear;
+	private DefaultTableModel model;
 	
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBoxStudentDepartment;
@@ -53,6 +65,9 @@ public class Student extends JFrame {
 
 	String id, firstName, lastName, department, contactNumber;
 	Date dateOfBirth;
+	private JTable table;
+	private JTextField textSearchInTable;
+	private JLabel lblSearchInTable;
 
 	/**
 	 * Launch the application.
@@ -211,23 +226,49 @@ public class Student extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// getting student data into the table and combo box
 	@SuppressWarnings("unchecked")
 	public void comboBoxFillStudentId() {
+		model = (DefaultTableModel) table.getModel();
+		model.setColumnCount(0);
+		model.setRowCount(0);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		
 		comboBoxStudentId.addItem("");
 		try {
-
+			
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
 					"Himanshu@15");
-			String sql = "select s_id from student";
+			String sql = "select *,DATE_FORMAT(s_dateOfBirth,'%d/%m/%Y') from student";
 			PreparedStatement stmt = con.prepareStatement(sql);
-
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				comboBoxStudentId.addItem(rs.getString("s_id"));
+			
+			String[] columnNames = { "Student Id", "First Name", "Last Name", "Department", "Contact No.", "Books Issued", "Date of Birth" };
+			model.setColumnIdentifiers(columnNames);
+			for (int i = 0; i < columnNames.length; i++) {
+				table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
 			
+			table.getColumnModel().getColumn(3).setPreferredWidth(281);
+			String[] row = new String[7];
+			
+			while(rs.next()) {
+				comboBoxStudentId.addItem(rs.getString("s_id"));
+				
+				row[0] = rs.getString(1);
+				row[1] = rs.getString(2);
+				row[2] = rs.getString(3);
+				row[3] = rs.getString(4);
+				row[4] = rs.getString(5);
+				row[5] = rs.getString(7);
+				row[6] = rs.getString(8);
+				model.addRow(row);
+			}
+			
+			stmt.close();
 			con.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "An error occurred!\nRecord could not be inserted.");
@@ -289,40 +330,41 @@ public class Student extends JFrame {
 		}
 	}
 
-	//delete student details
-		void deleteDetails() {
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem","root","Himanshu@15");
-				String sql = "select s_issued from student where s_id = ?";
-				PreparedStatement stmt = con.prepareStatement(sql);
-				stmt.setString(1, id);
-				
-				ResultSet rs = stmt.executeQuery();
-				
-				while(rs.next()) {
-					if(rs.getInt("s_issued") > 0) {
-						con.close();
-						JOptionPane.showMessageDialog(null, "Could not delete the record\nStudent has issued some books");
-						return;
-					}
-				}
-				
-				sql="delete from student where s_id = ?";
-				stmt = con.prepareStatement(sql);
-				
-				stmt.setString(1, id);
+	// delete student details
+	void deleteDetails() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
+					"Himanshu@15");
+			String sql = "select s_issued from student where s_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, id);
 
-				int f = stmt.executeUpdate();
-				if(f > 0) 
-					JOptionPane.showMessageDialog(null, "Record deleted successfully");
-				else
-					JOptionPane.showMessageDialog(null, "An error occurred!\nRecord could not be deleted.");
-				con.close();
-			} catch (Exception e) {
-				e.printStackTrace();
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				if (rs.getInt("s_issued") > 0) {
+					con.close();
+					JOptionPane.showMessageDialog(null, "Could not delete the record\nStudent has issued some books");
+					return;
+				}
 			}
+
+			sql = "delete from student where s_id = ?";
+			stmt = con.prepareStatement(sql);
+
+			stmt.setString(1, id);
+
+			int f = stmt.executeUpdate();
+			if (f > 0)
+				JOptionPane.showMessageDialog(null, "Record deleted successfully");
+			else
+				JOptionPane.showMessageDialog(null, "An error occurred!\nRecord could not be deleted.");
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 		
 		//allowing text fields to be editable
 		void setFieldEditable(boolean flag) {
@@ -331,6 +373,14 @@ public class Student extends JFrame {
 			comboBoxStudentDepartment.setEnabled(flag);
 			textStudentContactNumber.setEditable(flag);
 			textStudentDateOfBirth.setEnabled(flag);
+		}
+		
+		//search records in table
+		private void searchTable(String query) {
+			TableRowSorter<DefaultTableModel> trs = new TableRowSorter<DefaultTableModel>(model);
+			table.setRowSorter(trs);
+			
+			trs.setRowFilter(RowFilter.regexFilter(query));
 		}
 
 	
@@ -518,20 +568,27 @@ public class Student extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (btnSave.getText().equals("Add")) {
 					if (validation()) {
-						insertDetails();
+						int result = JOptionPane.showConfirmDialog(null, "Do you want to insert student details?", "Insert student confirmation", JOptionPane.YES_NO_OPTION);
+						if(result == JOptionPane.YES_NO_OPTION)
+							insertDetails();
 					}
 				}
 				if (btnSave.getText().equals("Update")) {
 					if (validation()) {
-						updateDetails();
+						int result = JOptionPane.showConfirmDialog(null, "Do you want to update student details?", "Update confirmation", JOptionPane.YES_NO_OPTION);
+						if(result == JOptionPane.YES_NO_OPTION)
+							updateDetails();
 					}
 
 				}
 				if (btnSave.getText().equals("Remove")) {
 					if (validation()) {
-						deleteDetails();
+						int result = JOptionPane.showConfirmDialog(null, "Do you want to remove student details?", "Delete confirmation", JOptionPane.YES_NO_OPTION);
+						if(result == JOptionPane.YES_NO_OPTION)
+							deleteDetails();
 					}
 				}
+				comboBoxFillStudentId();
 			}
 		});
 		btnSave.setVisible(false);
@@ -585,6 +642,7 @@ public class Student extends JFrame {
 		panel_1.add(lblStudentIdError);
 
 		comboBoxStudentDepartment = new JComboBox();
+		comboBoxStudentDepartment.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		comboBoxStudentDepartment.setVisible(false);
 		comboBoxStudentDepartment.setModel(new DefaultComboBoxModel(
 				new String[] { "", "Computer Science and Engineering", "Mechanical Engineering", "Civil Engineering",
@@ -594,6 +652,53 @@ public class Student extends JFrame {
 		panel_1.add(comboBoxStudentDepartment);
 
 		AutoCompleteDecorator.decorate(comboBoxStudentDepartment);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVisible(false);
+		scrollPane.setBounds(50, 53, 1014, 468);
+		panel_1.add(scrollPane);
+		
+		table = new JTable(){
+	         public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+	             Component comp = super.prepareRenderer(renderer, row, column);
+	             Color alternateColor = new Color(200, 201, 210);
+	             Color whiteColor = Color.WHITE;
+	             if(!comp.getBackground().equals(getSelectionBackground())) {
+	                Color c = (row % 2 == 0 ? alternateColor : whiteColor);
+	                comp.setBackground(c);
+	                c = null;
+	             }
+	             return comp;
+	          }
+	       };
+		table.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		scrollPane.setViewportView(table);
+		table.setRowHeight(30);
+		table.setAutoCreateRowSorter(true);
+		
+		textSearchInTable = new JTextField();
+		textSearchInTable.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				searchTable(textSearchInTable.getText());
+			}
+		});
+		textSearchInTable.setVisible(false);
+		textSearchInTable.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		textSearchInTable.setBounds(812, 22, 252, 32);
+		panel_1.add(textSearchInTable);
+		textSearchInTable.setColumns(10);
+		
+		lblSearchInTable = new JLabel("");
+		lblSearchInTable.setBackground(new Color(255, 255, 255));
+		lblSearchInTable.setIcon(new ImageIcon(Student.class.getResource("/com/images/search.png")));
+		lblSearchInTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblSearchInTable.setBounds(780, 22, 32, 32);
+		panel_1.add(lblSearchInTable);
+		lblSearchInTable.setVisible(false);
+		
+		JTableHeader tableHeader = table.getTableHeader();
+		tableHeader.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
@@ -623,7 +728,7 @@ public class Student extends JFrame {
 				dispose();
 			}
 		});
-		btnHome.setBounds(32, 48, 189, 67);
+		btnHome.setBounds(32, 42, 189, 67);
 		panel.add(btnHome);
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnHome.setBackground(new Color(169, 169, 169));
@@ -631,6 +736,10 @@ public class Student extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				table.setVisible(false);
+				scrollPane.setVisible(false);
+				textSearchInTable.setVisible(false);
+				lblSearchInTable.setVisible(false);
 				setFieldEditable(true);
 				comboBoxStudentId.setVisible(false);
 				lblStudentId.setVisible(true);
@@ -652,12 +761,17 @@ public class Student extends JFrame {
 		});
 		btnAdd.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnAdd.setBackground(new Color(169, 169, 169));
-		btnAdd.setBounds(32, 176, 189, 67);
+		btnAdd.setBounds(32, 149, 189, 67);
 		panel.add(btnAdd);
 
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				table.setVisible(false);
+				scrollPane.setVisible(false);
+				textSearchInTable.setVisible(false);
+				lblSearchInTable.setVisible(false);
+				
 				setFieldEditable(true);
 				lblStudentId.setVisible(true);
 				lblStudentFirstName.setVisible(false);
@@ -684,13 +798,19 @@ public class Student extends JFrame {
 		});
 		btnUpdate.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnUpdate.setBackground(new Color(169, 169, 169));
-		btnUpdate.setBounds(32, 292, 189, 67);
+		btnUpdate.setBounds(32, 364, 189, 67);
 		panel.add(btnUpdate);
 
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				table.setVisible(false);
+				scrollPane.setVisible(false);
 				setFieldEditable(false);
+				textSearchInTable.setVisible(false);
+				lblSearchInTable.setVisible(false);
+				
 				lblStudentId.setVisible(true);
 				lblStudentFirstName.setVisible(false);
 				lblStudentLastName.setVisible(false);
@@ -715,7 +835,40 @@ public class Student extends JFrame {
 		});
 		btnRemove.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnRemove.setBackground(new Color(169, 169, 169));
-		btnRemove.setBounds(32, 426, 189, 67);
+		btnRemove.setBounds(32, 467, 189, 67);
 		panel.add(btnRemove);
+		
+		JButton btnView = new JButton("View");
+		btnView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setFieldEditable(false);
+				lblStudentId.setVisible(false);
+				lblStudentFirstName.setVisible(false);
+				lblStudentLastName.setVisible(false);
+				lblStudentDepartment.setVisible(false);
+				lblStudentContactNumber.setVisible(false);
+				lblStudentDateOfBirth.setVisible(false);
+				textStudentId.setText("");
+				textStudentId.setVisible(false);
+				textStudentFirstName.setVisible(false);
+				textStudentLastName.setVisible(false);
+				comboBoxStudentDepartment.setVisible(false);
+				textStudentContactNumber.setVisible(false);
+				textStudentDateOfBirth.setVisible(false);
+				comboBoxStudentId.setVisible(false);
+				btnClear.setVisible(false);
+				btnSave.setVisible(false);
+				
+				table.setVisible(true);
+				scrollPane.setVisible(true);
+				textSearchInTable.setVisible(true);
+				lblSearchInTable.setVisible(true);
+				comboBoxFillStudentId();
+			}
+		});
+		btnView.setBounds(32, 254, 189, 67);
+		panel.add(btnView);
+		btnView.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnView.setBackground(new Color(169, 169, 169));
 	}
 }

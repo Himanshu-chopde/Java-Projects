@@ -254,6 +254,13 @@ public class HomePage extends JFrame {
 		panel_1.add(btnSignOut);
 		
 		JButton btnViewBook = new JButton("View Books");
+		btnViewBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewBook frame = new ViewBook();
+				frame.setVisible(true);
+				dispose();
+			}
+		});
 		btnViewBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnViewBook.setBackground(new Color(169, 169, 169));
 		btnViewBook.setBounds(277, 221, 189, 113);
