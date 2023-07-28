@@ -33,8 +33,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.KeyAdapter;
@@ -248,6 +251,18 @@ public class ReturnBook extends JFrame {
 		void removeDetails() {
 			String studentId = (String) comboBoxStudentId.getItemAt(comboBoxStudentId.getSelectedIndex());
 			String bookId = (String) comboBoxBookId.getItemAt(comboBoxBookId.getSelectedIndex());
+			String issueDate = textIssueDate.getText();
+			try {
+				Date d = new SimpleDateFormat("dd/MM/yyyy").parse(issueDate);
+				issueDate = new SimpleDateFormat("yyyy-MM-dd").format(d);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+			LocalDateTime now = LocalDateTime.now();
+			String returnDate = dtf.format(now);
+			
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem",
@@ -258,7 +273,17 @@ public class ReturnBook extends JFrame {
 				stmt.setString(2, bookId);
 
 				int f = stmt.executeUpdate();
-				if (f > 0) {
+				
+				sql = "update viewhistory set returndate = ? where s_id = ? and bookid = ? and issueddate = ? ;";
+				stmt = con.prepareStatement(sql);
+				stmt.setString(1, returnDate);
+				stmt.setString(2, studentId);
+				stmt.setString(3, bookId);
+				stmt.setString(4, issueDate);
+				
+				int f1 = stmt.executeUpdate();
+				
+				if (f > 0 && f1 > 0) {
 					updateDetails();
 					JOptionPane.showMessageDialog(this, "Record updated successfully");
 				}

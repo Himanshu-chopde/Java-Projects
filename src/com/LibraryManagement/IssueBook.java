@@ -263,9 +263,22 @@ public class IssueBook extends JFrame {
 				stmt.setString(6, bookId);
 				stmt.setString(7, textBookName.getText());
 				stmt.setString(8, issueDate);
-
+				
 				int f = stmt.executeUpdate();
-				if (f > 0) {
+
+				sql = "insert into viewhistory (s_id, s_firstname, s_lastname, s_department, s_contactnumber, bookid, bookname, issueddate) values (?,?,?,?,?,?,?,?)";
+				stmt = con.prepareStatement(sql);
+				stmt.setString(1, studentId);
+				stmt.setString(2, textStudentFirstName.getText());
+				stmt.setString(3, textStudentLastName.getText());
+				stmt.setString(4, textStudentDepartment.getText());
+				stmt.setString(5, textStudentContactNumber.getText());
+				stmt.setString(6, bookId);
+				stmt.setString(7, textBookName.getText());
+				stmt.setString(8, issueDate);
+				
+				int f1 = stmt.executeUpdate();
+				if (f > 0 && f1 > 0) {
 					updateDetails();
 					JOptionPane.showMessageDialog(this, "Book issued");
 				}

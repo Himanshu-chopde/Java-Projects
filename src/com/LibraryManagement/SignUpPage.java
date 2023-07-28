@@ -27,10 +27,13 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 @SuppressWarnings("serial")
 public class SignUpPage extends JPanel{
@@ -46,6 +49,8 @@ public class SignUpPage extends JPanel{
 	private JLabel lblPasswordErrorMsg;
 	private JLabel lblContactError;
 	private JLabel lblCheckUsername;
+	@SuppressWarnings("rawtypes")
+	private JComboBox comboBoxQuestions;
 	
 	/**
 	 * Launch the application.
@@ -67,10 +72,8 @@ public class SignUpPage extends JPanel{
 	 * Create the application.
 	 */
 
-	String fName, lName, username, contactNo;
-	Date dateOfBirth;
-	String password, confPassword;
-	int passwordCount;
+	private String fName, lName, username, contactNo, password, confPassword, question, answer;
+	private Date dateOfBirth;
 	private JTextField txtAnswer;
 	public SignUpPage() {
 		initialize();
@@ -79,70 +82,83 @@ public class SignUpPage extends JPanel{
 	// getting input for signup
 	boolean validation() {
 
-		fName = txtFirstName.getText();
-		lName = txtLastName.getText();
-		username = txtUsername.getText();
-		password = String.valueOf(txtPassword.getPassword());
-		confPassword = String.valueOf(txtConfirmPassword.getPassword());
+		fName = txtFirstName.getText().trim();
+		lName = txtLastName.getText().trim();
+		username = txtUsername.getText().trim();
+		password = String.valueOf(txtPassword.getPassword()).trim();
+		confPassword = String.valueOf(txtConfirmPassword.getPassword()).trim();
 		dateOfBirth = txtDateOfBirth.getDate();
-		contactNo = txtContactNumber.getText();
+		contactNo = txtContactNumber.getText().trim();
+		question = (String) comboBoxQuestions.getSelectedItem();
+		answer = txtAnswer.getText().trim();
+		
 		if (fName.equals("")) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the first name");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the first name.");
 			return false;
 		}
 
 		if (lName.equals("")) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the last name");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the last name.");
 			return false;
 		}
 
 		if (username.equals("")) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the username");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the username.");
 			return false;
 		}
 
 		if (password.isEmpty()) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the password");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the password.");
 			return false;
 		}
 
 		if (new String(confPassword).isEmpty()) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please confirm the password");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please confirm the password.");
 			return false;
 		}
 
 		if (dateOfBirth == null) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the date of birth");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the date of birth.");
 			return false;
 		}
 		
 		if (contactNo.equals("")) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the contact number");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the contact number.");
 			return false;
 		}
 		
 		if(checkUsername()) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Username already exist\nPlease try with another username");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Username already exist\nPlease try with another username.");
 			return false;
 		}
 		
 		if(!isValidPassword(password)) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter valid password");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter valid password.");
 			return false;
 		}
 		
 		if (!password.equals(confPassword)) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Password don't match");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Password don't match.");
 			return false;
 		}
 		
 		if(isValidDob(dateOfBirth)) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the valid date of birth");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the valid date of birth.");
 			return false;
 		}
 		
 		if(!isValidNumber(contactNo)) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter valid contact number");
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter valid contact number.");
+			return false;
+		}
+		
+		if (question.equals("")) {
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please select the security question.");
+			return false;
+		}
+		
+		if (answer.equals("")) {
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter the answer for the security question.");
 			return false;
 		}
 		
@@ -199,10 +215,9 @@ public class SignUpPage extends JPanel{
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem","root","Himanshu@15");
-			String sql="select * from signup where username=? and password=?";
+			String sql="select * from signup where username=?;";
 			PreparedStatement stmt=con.prepareStatement(sql);
 			stmt.setString(1, username);
-			stmt.setString(2, password);
 			ResultSet rs=stmt.executeQuery();
 			
 			if(rs.next()) {
@@ -223,7 +238,7 @@ public class SignUpPage extends JPanel{
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem","root","Himanshu@15");
-			String sql="insert into signup(firstName,lastName,username,password,dateOfBirth,contactNo) values (?,?,?,?,?,?)";
+			String sql="insert into signup(firstName,lastName,username,password,dateOfBirth,contactNo,securityquestion,answer) values (?,?,?,?,?,?,?,?)";
 			PreparedStatement stmt=con.prepareStatement(sql);
 			stmt.setString(1, fName);
 			stmt.setString(2, lName);
@@ -231,6 +246,8 @@ public class SignUpPage extends JPanel{
 			stmt.setString(4, password);
 			stmt.setString(5, dob);
 			stmt.setString(6, contactNo);
+			stmt.setString(7, question);
+			stmt.setString(8, answer);
 
 			int f = stmt.executeUpdate();
 			if(f > 0) 
@@ -246,6 +263,7 @@ public class SignUpPage extends JPanel{
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initialize() {
 		frmLibraryManagementLogin = new JFrame();
 		frmLibraryManagementLogin.setLocationRelativeTo(null);
@@ -512,8 +530,19 @@ public class SignUpPage extends JPanel{
 		txtAnswer.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		txtAnswer.setColumns(10);
 		txtAnswer.setBackground(Color.WHITE);
-		txtAnswer.setBounds(195, 316, 215, 24);
+		txtAnswer.setBounds(195, 319, 320, 24);
 		panel_1.add(txtAnswer);
+		
+		comboBoxQuestions = new JComboBox();
+		comboBoxQuestions.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		comboBoxQuestions.setModel(new DefaultComboBoxModel(new String[] {"", "Your favorite movie?", "Your favorite food?", "Your favourite restaurant?", "What is your favorite sport?", "What is the first name of your favorite uncle?", "What is your oldest cousin's name?", "Mother's maiden name?", "What is the first name of your favorite aunt?", "Where did you spend your childhood summers?", "What is your skin color?", "What was the last name of your favorite teacher?", "What was the last name of your childhood friend?", "What was your favorite food as a child?", "What was the last name of your first boss?", "Where did you meet your spouse?", "What is the name of your first shcool?", "What is the name of the hospital you were born?", "What is your main frequent flier number?", "What was the model of your first car?", "What was the name of your favorite childhood pet?"}));
+		comboBoxQuestions.setBounds(195, 281, 215, 25);
+		panel_1.add(comboBoxQuestions);
+		comboBoxQuestions.setSize(320, comboBoxQuestions.getPreferredSize().height);
+		
+		
 		frmLibraryManagementLogin.getContentPane().setLayout(groupLayout);
 	}
+	
+	
 }
