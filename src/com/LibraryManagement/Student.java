@@ -685,7 +685,7 @@ public class Student extends JFrame {
 		});
 		textSearchInTable.setVisible(false);
 		textSearchInTable.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		textSearchInTable.setBounds(812, 22, 252, 32);
+		textSearchInTable.setBounds(718, 21, 252, 32);
 		panel_1.add(textSearchInTable);
 		textSearchInTable.setColumns(10);
 		
@@ -693,7 +693,7 @@ public class Student extends JFrame {
 		lblSearchInTable.setBackground(new Color(255, 255, 255));
 		lblSearchInTable.setIcon(new ImageIcon(Student.class.getResource("/com/images/search.png")));
 		lblSearchInTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblSearchInTable.setBounds(780, 22, 32, 32);
+		lblSearchInTable.setBounds(686, 21, 32, 32);
 		panel_1.add(lblSearchInTable);
 		lblSearchInTable.setVisible(false);
 		

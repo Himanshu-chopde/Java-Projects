@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,6 +20,9 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,6 +33,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.SwingConstants;
 import java.awt.Component;
@@ -76,6 +82,8 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 	private JLabel lblUsername_1;
 	private String confPassword;
 	private JLabel lblPasswordErrorMsg;
+	private boolean showPasswordf = true,showPassword_1 = false;
+	private JButton btnHidePassword_1, btnHidePassword;
 	// Checking data in database
 	boolean userVarification(String username) {
 		try {
@@ -261,12 +269,12 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		txtUsername.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		txtUsername.setColumns(10);
 		txtUsername.setBackground(Color.WHITE);
-		txtUsername.setBounds(313, 79, 215, 24);
+		txtUsername.setBounds(313, 79, 240, 24);
 		loginPanel.add(txtUsername);
 
 		txtPassword = new JPasswordField();
 		txtPassword.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		txtPassword.setBounds(313, 129, 215, 24);
+		txtPassword.setBounds(313, 130, 215, 24);
 		loginPanel.add(txtPassword);
 
 		btnLogin = new JButton("Login");
@@ -279,6 +287,37 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 					} else {
 						if(userVarification(username) && password_1.equals(password))  {
 							JOptionPane.showMessageDialog(null, "Login successful");
+							
+							try {
+						         File file = new File("user.txt");
+						         file.createNewFile();
+						         new FileOutputStream("user.txt").close();
+						         FileOutputStream fos = null;
+						         DataOutputStream dos = null;
+						         //System.out.println("File: " + file);
+						         try {
+									fos = new FileOutputStream(file);
+									dos = new DataOutputStream(fos);
+									
+									dos.writeUTF(username);
+									dos.writeUTF(password);
+									
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+								finally {
+									try {
+										fos.close();
+										dos.close();
+
+									} catch (Exception e2) {
+										e2.printStackTrace();
+									}
+								}
+						      } catch(Exception e3) {
+						         e3.printStackTrace();
+						      }
+							
 							try {
 								HomePage frame = new HomePage();
 								frame.setVisible(true);
@@ -319,6 +358,8 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 					lblPasswordErrorMsg.setText("");
 					lblEnterSecurityQuestion.setVisible(false);
 					lblResetPassword.setVisible(false);
+					btnHidePassword_1.setVisible(false);
+					btnHidePassword.setVisible(true);
 					lblConfirmPassword.setVisible(false);
 					txtResetPassword.setVisible(false);
 					txtConfirmPassword.setVisible(false);
@@ -353,7 +394,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 					result = JOptionPane.showConfirmDialog(null, "Are you sure, You want to exit?", "Exit",
 							JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.YES_OPTION) {
-						JOptionPane.showMessageDialog(lp, "Bye Bye!");
+						JOptionPane.showMessageDialog(lp, "Bye!");
 						System.exit(0);
 					}
 				}
@@ -368,11 +409,14 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 						txtUsername_1.setVisible(false);
 						comboBoxQuestions.setVisible(false);
 						txtAnswer.setVisible(false);
+						showPasswordf = false;
 						
 						lblResetPassword.setVisible(true);
 						lblConfirmPassword.setVisible(true);
 						txtResetPassword.setVisible(true);
 						txtConfirmPassword.setVisible(true);
+						btnHidePassword_1.setVisible(true);
+						btnHidePassword.setVisible(true);
 						
 						if(passwordValidation()) {
 							if(updatePassword()) {
@@ -390,6 +434,8 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 								txtResetPassword.setVisible(false);
 								txtConfirmPassword.setVisible(false);
 								txtResetPassword.setText("");
+								btnHidePassword_1.setVisible(false);
+								btnHidePassword.setVisible(true);
 								txtConfirmPassword.setText("");
 								lblUsername_1.setVisible(false);
 								txtUsername_1.setVisible(false);
@@ -436,6 +482,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		btnForgotPassword.setBackground(new Color(192, 192, 192));
 		btnForgotPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				showPasswordf = false;
 				lblUsername.setVisible(false);
 				lblPassword.setVisible(false);
 				txtUsername.setVisible(false);
@@ -447,6 +494,8 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 				lblConfirmPassword.setVisible(false);
 				btnLogin.setVisible(false);
 				lblLogin.setText("Forgot Pasword");
+				btnHidePassword.setVisible(false);
+				btnHidePassword_1.setVisible(false);
 				
 				lblEnterSecurityQuestion.setVisible(true);
 				lblEnterSecurityQuestion.setText("Please enter security question and answer to reset the password");
@@ -581,5 +630,59 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		lblPasswordErrorMsg.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		lblPasswordErrorMsg.setBounds(123, 164, 496, 81);
 		loginPanel.add(lblPasswordErrorMsg);
+		
+		btnHidePassword = new JButton("");
+		btnHidePassword.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				if(showPasswordf == false) {
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("")));
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
+					txtPassword.setEchoChar('•');
+					txtConfirmPassword.setEchoChar('•');
+				}
+				else if(showPasswordf == true) {
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("")));
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/hidePassword.png")));
+					txtPassword.setEchoChar((char)0);
+					txtConfirmPassword.setEchoChar((char)0);
+				}
+				showPasswordf = !showPasswordf;
+			}
+		});
+		btnHidePassword.setBorder(new LineBorder(new Color(119, 136, 153)));
+		btnHidePassword.setBackground(new Color(255, 255, 255));
+		btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
+		btnHidePassword.setBounds(527, 130, 26, 23);
+		loginPanel.add(btnHidePassword);
+		
+		
+		btnHidePassword_1 = new JButton("");
+		btnHidePassword_1.setVisible(false);
+		btnHidePassword_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnHidePassword_1.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				if(showPassword_1) {
+					btnHidePassword_1.setIcon(new ImageIcon(SignUpPage.class.getResource("")));
+					btnHidePassword_1.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
+					txtResetPassword.setEchoChar('•');
+				}
+				else if(!showPassword_1) {
+					btnHidePassword_1.setIcon(new ImageIcon(SignUpPage.class.getResource("")));
+					btnHidePassword_1.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/hidePassword.png")));
+					txtResetPassword.setEchoChar((char)0);
+				}
+				showPassword_1 = !showPassword_1;
+			}
+		});
+		btnHidePassword_1.setBorder(new LineBorder(new Color(119, 136, 153)));
+		btnHidePassword_1.setBackground(new Color(255, 255, 255));
+		btnHidePassword_1.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
+		btnHidePassword_1.setBounds(527, 79, 26, 24);
+		loginPanel.add(btnHidePassword_1);
 	}
 }

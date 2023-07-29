@@ -34,6 +34,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class SignUpPage extends JPanel{
@@ -51,6 +52,7 @@ public class SignUpPage extends JPanel{
 	private JLabel lblCheckUsername;
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBoxQuestions;
+	boolean showPasswordf = false;
 	
 	/**
 	 * Launch the application.
@@ -127,10 +129,10 @@ public class SignUpPage extends JPanel{
 			return false;
 		}
 		
-		if(checkUsername()) {
-			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Username already exist\nPlease try with another username.");
-			return false;
-		}
+//		if(checkUsername()) {
+//			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Username already exist\nPlease try with another username.");
+//			return false;
+//		}
 		
 		if(!isValidPassword(password)) {
 			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter valid password.");
@@ -410,7 +412,7 @@ public class SignUpPage extends JPanel{
 			}
 		});
 		txtPassword.setBackground(new Color(255, 255, 255));
-		txtPassword.setBounds(195, 141, 215, 24);
+		txtPassword.setBounds(195, 141, 192, 24);
 		panel_1.add(txtPassword);
 
 		txtConfirmPassword = new JPasswordField();
@@ -503,7 +505,7 @@ public class SignUpPage extends JPanel{
 				int result;
 				result = JOptionPane.showConfirmDialog(null, "Are you sure, You want to exit?","Exit",JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
-					JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Bye Bye!");
+					JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Bye!");
 					System.exit(0);
 				}
 			}
@@ -540,9 +542,29 @@ public class SignUpPage extends JPanel{
 		panel_1.add(comboBoxQuestions);
 		comboBoxQuestions.setSize(320, comboBoxQuestions.getPreferredSize().height);
 		
+		JButton btnHidePassword = new JButton("");
+		btnHidePassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(showPasswordf) {
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("")));
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
+					txtPassword.setEchoChar('•');
+				}
+				else if(!showPasswordf) {
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("")));
+					btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/hidePassword.png")));
+					txtPassword.setEchoChar((char)0);
+				}
+				showPasswordf = !showPasswordf;
+			}
+		});
+		btnHidePassword.setBorder(new LineBorder(new Color(119, 136, 153)));
+		btnHidePassword.setBackground(new Color(255, 255, 255));
+		btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
+		btnHidePassword.setBounds(384, 141, 26, 24);
+		panel_1.add(btnHidePassword);
+		
 		
 		frmLibraryManagementLogin.getContentPane().setLayout(groupLayout);
 	}
-	
-	
 }

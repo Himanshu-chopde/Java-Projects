@@ -26,6 +26,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JToggleButton;
 import javax.swing.RowFilter;
@@ -36,6 +38,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ImageIcon;
+import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
 public class ViewHistory extends JFrame {
@@ -44,8 +47,13 @@ public class ViewHistory extends JFrame {
 	private JTable table;
 	private DefaultTableModel model;
 	private JToggleButton tglbtnIssuedBooks;
-	private JToggleButton tglbtnAvailableBooks;
+	private JToggleButton tglbtnReturnedBooks;
 	private JTextField textSearchInTable;
+	private JToggleButton tglbtnSearchByDate;
+	private JDateChooser txtDateFrom;
+	private JDateChooser txtDateTo;
+	private JButton btnDateTo;
+	private Date fromDate, toDate;
 
 	/**
 	 * Launch the application.
@@ -120,82 +128,141 @@ public class ViewHistory extends JFrame {
 		scrollPane.setViewportView(table);
 		table.setRowHeight(30);
 		table.setAutoCreateRowSorter(true);
-		
-				JButton btnHome = new JButton("Home");
-				btnHome.setBounds(31, 11, 159, 47);
-				panel_1.add(btnHome);
-				btnHome.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						HomePage home = new HomePage();
-						home.setVisible(true);
-						dispose();
-					}
-				});
-				btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-				btnHome.setBackground(new Color(169, 169, 169));
-				
-						tglbtnIssuedBooks = new JToggleButton("Issued Books");
-						tglbtnIssuedBooks.setBounds(211, 11, 159, 47);
-						panel_1.add(tglbtnIssuedBooks);
-						tglbtnIssuedBooks.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								tglbtnAvailableBooks.setSelected(false);
-								if (tglbtnIssuedBooks.isSelected()) {
-									getIssuedBookDataFromDatabase();
-								} else {
-									getDataFromDatabase();
-								}
-							}
-						});
-						tglbtnIssuedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-						tglbtnIssuedBooks.setBackground(new Color(169, 169, 169));
-						
-								tglbtnAvailableBooks = new JToggleButton("Returned Books");
-								tglbtnAvailableBooks.setBounds(391, 11, 165, 47);
-								panel_1.add(tglbtnAvailableBooks);
-								tglbtnAvailableBooks.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										tglbtnIssuedBooks.setSelected(false);
-										if (tglbtnAvailableBooks.isSelected()) {
-											getreturnBookDataFromDatabase();
-										} else {
-											getDataFromDatabase();
-										}
-									}
-								});
-								tglbtnAvailableBooks.setBackground(new Color(169, 169, 169));
-								tglbtnAvailableBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-								
-										JButton btnNewButton = new JButton("");
-										btnNewButton.setBounds(1114, 11, 35, 38);
-										panel_1.add(btnNewButton);
-										btnNewButton.setBorder(null);
-										btnNewButton.setBackground(new Color(255, 255, 255));
-										btnNewButton.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/search.png")));
-										
-												textSearchInTable = new JTextField("Search...");
-												textSearchInTable.setBounds(1149, 12, 190, 36);
-												panel_1.add(textSearchInTable);
-												textSearchInTable.addFocusListener(new FocusAdapter() {
-													@Override
-													public void focusLost(FocusEvent e) {
-														textSearchInTable.setText("Search...");
-													}
 
-													@Override
-													public void focusGained(FocusEvent e) {
-														textSearchInTable.setText("");
-													}
-												});
-												
-														textSearchInTable.addKeyListener(new KeyAdapter() {
-															@Override
-															public void keyReleased(KeyEvent e) {
-																searchTable(textSearchInTable.getText());
-															}
-														});
-														textSearchInTable.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-														textSearchInTable.setColumns(10);
+		JButton btnHome = new JButton("Home");
+		btnHome.setBounds(31, 11, 159, 47);
+		panel_1.add(btnHome);
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HomePage home = new HomePage();
+				home.setVisible(true);
+				dispose();
+			}
+		});
+		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnHome.setBackground(new Color(169, 169, 169));
+
+		tglbtnIssuedBooks = new JToggleButton("Issued Books");
+		tglbtnIssuedBooks.setBounds(200, 11, 159, 47);
+		panel_1.add(tglbtnIssuedBooks);
+		tglbtnIssuedBooks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnReturnedBooks.setSelected(false);
+				tglbtnSearchByDate.setSelected(false);
+				if (tglbtnIssuedBooks.isSelected()) {
+					getIssuedBookDataFromDatabase();
+				} else {
+					getDataFromDatabase();
+				}
+			}
+		});
+		tglbtnIssuedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		tglbtnIssuedBooks.setBackground(new Color(169, 169, 169));
+
+		tglbtnReturnedBooks = new JToggleButton("Returned Books");
+		tglbtnReturnedBooks.setBounds(369, 11, 160, 47);
+		panel_1.add(tglbtnReturnedBooks);
+		tglbtnReturnedBooks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnIssuedBooks.setSelected(false);
+				tglbtnSearchByDate.setSelected(false);
+				if (tglbtnReturnedBooks.isSelected()) {
+					getreturnBookDataFromDatabase();
+				} else {
+					getDataFromDatabase();
+				}
+			}
+		});
+		tglbtnReturnedBooks.setBackground(new Color(169, 169, 169));
+		tglbtnReturnedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+
+		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(1028, 16, 35, 38);
+		panel_1.add(btnNewButton);
+		btnNewButton.setBorder(null);
+		btnNewButton.setBackground(new Color(255, 255, 255));
+		btnNewButton.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/search.png")));
+
+		textSearchInTable = new JTextField("Search...");
+		textSearchInTable.setBounds(1063, 17, 190, 36);
+		panel_1.add(textSearchInTable);
+		textSearchInTable.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				textSearchInTable.setText("Search...");
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				textSearchInTable.setText("");
+			}
+		});
+
+		textSearchInTable.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				searchTable(textSearchInTable.getText());
+			}
+		});
+		textSearchInTable.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		textSearchInTable.setColumns(10);
+
+		txtDateFrom = new JDateChooser();
+		txtDateFrom.getCalendarButton().setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		txtDateFrom.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		txtDateFrom.setDateFormatString("dd-MM-yyyy");
+		txtDateFrom.setBackground(new Color(250, 250, 210));
+		txtDateFrom.setBounds(752, 24, 120, 24);
+		panel_1.add(txtDateFrom);
+
+		txtDateTo = new JDateChooser();
+		txtDateTo.getCalendarButton().setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		txtDateTo.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		txtDateTo.setDateFormatString("dd-MM-yyyy");
+		txtDateTo.setBackground(new Color(250, 250, 210));
+		txtDateTo.setBounds(898, 24, 120, 24);
+		panel_1.add(txtDateTo);
+
+		tglbtnSearchByDate = new JToggleButton("Search By Date");
+		tglbtnSearchByDate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnReturnedBooks.setSelected(false);
+				tglbtnIssuedBooks.setSelected(false);
+				if(!dateValidation()) {
+					tglbtnSearchByDate.setSelected(false);
+				}
+				else {
+					getDataByDateFromDatabase();
+				}
+				if(!tglbtnSearchByDate.isSelected()) {
+					getDataFromDatabase();
+				}
+			}
+		});
+		tglbtnSearchByDate.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		tglbtnSearchByDate.setBackground(new Color(169, 169, 169));
+		tglbtnSearchByDate.setBounds(539, 11, 160, 47);
+		panel_1.add(tglbtnSearchByDate);
+
+		JLabel lblFrom = new JLabel("From");
+		lblFrom.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblFrom.setBounds(713, 25, 35, 24);
+		panel_1.add(lblFrom);
+
+		JLabel lblTo = new JLabel("To");
+		lblTo.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblTo.setBounds(877, 25, 24, 24);
+		panel_1.add(lblTo);
+
+		btnDateTo = new JButton("Print");
+		btnDateTo.setBackground(new Color(169, 169, 169));
+		btnDateTo.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnDateTo.setBounds(1263, 11, 76, 47);
+		panel_1.add(btnDateTo);
 
 		JTableHeader tableHeader = table.getTableHeader();
 		tableHeader.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -220,14 +287,14 @@ public class ViewHistory extends JFrame {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 
-			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id","Book Name",
-					"Issue Date", "Return Date" };
+			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id",
+					"Book Name", "Issue Date", "Return Date" };
 			model.setColumnIdentifiers(columnNames);
 			for (int i = 0; i < columnNames.length; i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
 			table.getColumnModel().getColumn(3).setPreferredWidth(281);
-			
+
 			String[] row = new String[9];
 
 			while (rs.next()) {
@@ -268,14 +335,14 @@ public class ViewHistory extends JFrame {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 
-			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id","Book Name",
-					"Issue Date", "Return Date" };
+			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id",
+					"Book Name", "Issue Date", "Return Date" };
 			model.setColumnIdentifiers(columnNames);
 			for (int i = 0; i < columnNames.length; i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
 			table.getColumnModel().getColumn(3).setPreferredWidth(281);
-			
+
 			String[] row = new String[9];
 
 			while (rs.next()) {
@@ -317,14 +384,14 @@ public class ViewHistory extends JFrame {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 
-			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id","Book Name",
-					"Issue Date", "Return Date" };
+			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id",
+					"Book Name", "Issue Date", "Return Date" };
 			model.setColumnIdentifiers(columnNames);
 			for (int i = 0; i < columnNames.length; i++) {
 				table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 			}
 			table.getColumnModel().getColumn(3).setPreferredWidth(281);
-			
+
 			String[] row = new String[9];
 
 			while (rs.next()) {
@@ -348,6 +415,75 @@ public class ViewHistory extends JFrame {
 		}
 
 	}
+	
+	private void getDataByDateFromDatabase(){
+		model = (DefaultTableModel) table.getModel();
+		model.setColumnCount(0);
+		model.setRowCount(0);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+		String from = formater.format(fromDate);
+		String to = formater.format(toDate);
+
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
+					"Himanshu@15");
+			String sql = "select *, DATE_FORMAT(issueddate,'%d/%m/%Y') as issued_date, DATE_FORMAT(returndate,'%d/%m/%Y') as return_date from viewhistory where (issueddate between ? and ?) or (returndate between ? and ?);";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			
+			stmt.setString(1, from);
+			stmt.setString(2, to);
+			stmt.setString(3, from);
+			stmt.setString(4, to);
+			
+			ResultSet rs = stmt.executeQuery();
+
+			String[] columnNames = { "Studetn Id", "First Name", "Last Name", "Department", "Contact No.", "Books Id",
+					"Book Name", "Issue Date", "Return Date" };
+			model.setColumnIdentifiers(columnNames);
+			for (int i = 0; i < columnNames.length; i++) {
+				table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			}
+			table.getColumnModel().getColumn(3).setPreferredWidth(281);
+
+			String[] row = new String[9];
+
+			while (rs.next()) {
+				row[0] = rs.getString(1);
+				row[1] = rs.getString(2);
+				row[2] = rs.getString(3);
+				row[3] = rs.getString(4);
+				row[4] = rs.getString(5);
+				row[5] = rs.getString(6);
+				row[6] = rs.getString(7);
+				row[7] = rs.getString(10);
+				row[8] = rs.getString(11);
+				model.addRow(row);
+			}
+
+			stmt.close();
+			con.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "An error occurred!\nRecord could not be inserted.");
+			e.printStackTrace();
+		}
+
+	}
+	
+	// Validating the dates
+	private boolean dateValidation() {
+		fromDate = txtDateFrom.getDate();
+		toDate = txtDateTo.getDate();
+		if(fromDate == null || toDate == null) {
+			JOptionPane.showMessageDialog(null,"Please enter the dates");
+			return false;
+		}
+		return true;
+	}
 
 	// search records in table
 
@@ -357,5 +493,4 @@ public class ViewHistory extends JFrame {
 
 		trs.setRowFilter(RowFilter.regexFilter(query));
 	}
-
 }

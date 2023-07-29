@@ -718,7 +718,7 @@ public class AddBook extends JFrame {
 		
 		textSearchInTable = new JTextField("Search...");
 		textSearchInTable.setVisible(false);
-		textSearchInTable.setBounds(865, 21, 215, 36);
+		textSearchInTable.setBounds(784, 21, 215, 36);
 		panel_1.add(textSearchInTable);
 		textSearchInTable.addFocusListener(new FocusAdapter() {
 			@Override
@@ -742,7 +742,7 @@ public class AddBook extends JFrame {
 		
 		btnSearch = new JButton("");
 		btnSearch.setVisible(false);
-		btnSearch.setBounds(830, 21, 35, 38);
+		btnSearch.setBounds(749, 21, 35, 38);
 		panel_1.add(btnSearch);
 		btnSearch.setBorder(null);
 		btnSearch.setBackground(new Color(255, 255, 255));

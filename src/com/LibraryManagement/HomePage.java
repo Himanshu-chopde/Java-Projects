@@ -172,17 +172,35 @@ public class HomePage extends JFrame {
 		btnViewHistory.setBounds(899, 221, 189, 113);
 		panel_1.add(btnViewHistory);
 		
+		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result;
+				result = JOptionPane.showConfirmDialog(null, "Are you sure, You want to exit?", "Exit",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					JOptionPane.showMessageDialog(null, "Bye!");
+					System.exit(0);
+				}
+			}
+		});
+		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		btnExit.setBackground(new Color(169, 169, 169));
+		btnExit.setBounds(277, 407, 189, 113);
+		panel_1.add(btnExit);
+		
 		JButton btnLibrarianDetails = new JButton("User Details");
+		btnLibrarianDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserDetails frame = new UserDetails();
+				frame.setVisible(true);
+				dispose();
+			}
+		});
 		btnLibrarianDetails.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnLibrarianDetails.setBackground(new Color(169, 169, 169));
-		btnLibrarianDetails.setBounds(277, 407, 189, 113);
+		btnLibrarianDetails.setBounds(592, 407, 189, 113);
 		panel_1.add(btnLibrarianDetails);
-		
-		JButton btnLibrarianDetails_1 = new JButton("User Details");
-		btnLibrarianDetails_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnLibrarianDetails_1.setBackground(new Color(169, 169, 169));
-		btnLibrarianDetails_1.setBounds(592, 407, 189, 113);
-		panel_1.add(btnLibrarianDetails_1);
 		contentPane.add(panel);
 	}
 }
