@@ -34,6 +34,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -44,6 +45,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class Student extends JFrame {
@@ -67,7 +69,8 @@ public class Student extends JFrame {
 	Date dateOfBirth;
 	private JTable table;
 	private JTextField textSearchInTable;
-	private JLabel lblSearchInTable;
+	private JButton lblSearchInTable;
+	private JButton btnPrint;
 
 	/**
 	 * Launch the application.
@@ -401,7 +404,7 @@ public class Student extends JFrame {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
-		panel_1.setBackground(new Color(211, 211, 211));
+		panel_1.setBackground(new Color(230, 230, 250));
 		panel_1.setBounds(259, 142, 1111, 574);
 		contentPane.add(panel_1);
 
@@ -528,6 +531,9 @@ public class Student extends JFrame {
 		AutoCompleteDecorator.decorate(comboBoxStudentId);
 
 		btnClear = new JButton("Clear");
+		btnClear.setIcon(new ImageIcon(Student.class.getResource("/com/images/cancelSmall.png")));
+		btnClear.setForeground(new Color(255, 255, 255));
+		btnClear.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textStudentId.setText("");
@@ -558,12 +564,15 @@ public class Student extends JFrame {
 			}
 		});
 		btnClear.setVisible(false);
-		btnClear.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnClear.setBackground(new Color(169, 169, 169));
+		btnClear.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		btnClear.setBackground(new Color(51, 153, 204));
 		btnClear.setBounds(277, 462, 133, 46);
 		panel_1.add(btnClear);
 
 		btnSave = new JButton("Save");
+		btnSave.setIcon(new ImageIcon(Student.class.getResource("/com/images/save.png")));
+		btnSave.setForeground(new Color(255, 255, 255));
+		btnSave.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (btnSave.getText().equals("Add")) {
@@ -592,8 +601,8 @@ public class Student extends JFrame {
 			}
 		});
 		btnSave.setVisible(false);
-		btnSave.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnSave.setBackground(new Color(169, 169, 169));
+		btnSave.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		btnSave.setBackground(new Color(51, 153, 204));
 		btnSave.setBounds(663, 462, 133, 46);
 		panel_1.add(btnSave);
 
@@ -689,12 +698,36 @@ public class Student extends JFrame {
 		panel_1.add(textSearchInTable);
 		textSearchInTable.setColumns(10);
 		
-		lblSearchInTable = new JLabel("");
+		lblSearchInTable = new JButton("");
 		lblSearchInTable.setBackground(new Color(255, 255, 255));
 		lblSearchInTable.setIcon(new ImageIcon(Student.class.getResource("/com/images/search.png")));
 		lblSearchInTable.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblSearchInTable.setBounds(686, 21, 32, 32);
 		panel_1.add(lblSearchInTable);
+		
+		btnPrint = new JButton("Print");
+		btnPrint.setIcon(new ImageIcon(Student.class.getResource("/com/images/printer-.png")));
+		btnPrint.setForeground(new Color(255, 255, 255));
+		btnPrint.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MessageFormat header = new MessageFormat("Student Details");
+				MessageFormat footer = new MessageFormat("page {0,number,Integer}");
+				
+				try {
+					table.print(JTable.PrintMode.FIT_WIDTH,header,footer);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
+		btnPrint.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		btnPrint.setBackground(new Color(51, 153, 204));
+		btnPrint.setBounds(988, 21, 76, 32);
+		panel_1.add(btnPrint);
+		
+		btnPrint.setVisible(false);
+		
 		lblSearchInTable.setVisible(false);
 		
 		JTableHeader tableHeader = table.getTableHeader();
@@ -703,7 +736,7 @@ public class Student extends JFrame {
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		panel_2.setBackground(new Color(169, 169, 169));
+		panel_2.setBackground(new Color(70, 130, 180));
 		panel_2.setBounds(0, 0, 1370, 142);
 		contentPane.add(panel_2);
 
@@ -716,11 +749,13 @@ public class Student extends JFrame {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(176, 224, 230));
+		panel.setBackground(new Color(176, 196, 222));
 		panel.setBounds(0, 142, 260, 574);
 		contentPane.add(panel);
 
 		JButton btnHome = new JButton("Home");
+		btnHome.setIcon(new ImageIcon(Student.class.getResource("/com/images/house-24.png")));
+		btnHome.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				HomePage home=new HomePage();
@@ -731,15 +766,18 @@ public class Student extends JFrame {
 		btnHome.setBounds(32, 42, 189, 67);
 		panel.add(btnHome);
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnHome.setBackground(new Color(169, 169, 169));
+		btnHome.setBackground(new Color(230, 230, 250));
 
 		JButton btnAdd = new JButton("Add");
+		btnAdd.setIcon(new ImageIcon(Student.class.getResource("/com/images/plus-5-24.png")));
+		btnAdd.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setVisible(false);
 				scrollPane.setVisible(false);
 				textSearchInTable.setVisible(false);
 				lblSearchInTable.setVisible(false);
+				btnPrint.setVisible(false);
 				setFieldEditable(true);
 				comboBoxStudentId.setVisible(false);
 				lblStudentId.setVisible(true);
@@ -760,17 +798,20 @@ public class Student extends JFrame {
 			}
 		});
 		btnAdd.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnAdd.setBackground(new Color(169, 169, 169));
+		btnAdd.setBackground(new Color(230, 230, 250));
 		btnAdd.setBounds(32, 149, 189, 67);
 		panel.add(btnAdd);
 
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setIcon(new ImageIcon(Student.class.getResource("/com/images/edit-property-24.png")));
+		btnUpdate.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.setVisible(false);
 				scrollPane.setVisible(false);
 				textSearchInTable.setVisible(false);
 				lblSearchInTable.setVisible(false);
+				btnPrint.setVisible(false);
 				
 				setFieldEditable(true);
 				lblStudentId.setVisible(true);
@@ -797,11 +838,13 @@ public class Student extends JFrame {
 			}
 		});
 		btnUpdate.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnUpdate.setBackground(new Color(169, 169, 169));
+		btnUpdate.setBackground(new Color(230, 230, 250));
 		btnUpdate.setBounds(32, 364, 189, 67);
 		panel.add(btnUpdate);
 
 		JButton btnRemove = new JButton("Remove");
+		btnRemove.setIcon(new ImageIcon(Student.class.getResource("/com/images/delete-property-24.png")));
+		btnRemove.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -810,6 +853,7 @@ public class Student extends JFrame {
 				setFieldEditable(false);
 				textSearchInTable.setVisible(false);
 				lblSearchInTable.setVisible(false);
+				btnPrint.setVisible(false);
 				
 				lblStudentId.setVisible(true);
 				lblStudentFirstName.setVisible(false);
@@ -834,11 +878,13 @@ public class Student extends JFrame {
 			}
 		});
 		btnRemove.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnRemove.setBackground(new Color(169, 169, 169));
+		btnRemove.setBackground(new Color(230, 230, 250));
 		btnRemove.setBounds(32, 467, 189, 67);
 		panel.add(btnRemove);
 		
 		JButton btnView = new JButton("View");
+		btnView.setIcon(new ImageIcon(Student.class.getResource("/com/images/student24.png")));
+		btnView.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnView.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setFieldEditable(false);
@@ -863,12 +909,13 @@ public class Student extends JFrame {
 				scrollPane.setVisible(true);
 				textSearchInTable.setVisible(true);
 				lblSearchInTable.setVisible(true);
+				btnPrint.setVisible(true);
 				comboBoxFillStudentId();
 			}
 		});
 		btnView.setBounds(32, 254, 189, 67);
 		panel.add(btnView);
 		btnView.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnView.setBackground(new Color(169, 169, 169));
+		btnView.setBackground(new Color(230, 230, 250));
 	}
 }

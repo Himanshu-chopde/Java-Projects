@@ -37,6 +37,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class UserDetails extends JFrame {
@@ -96,7 +97,7 @@ public class UserDetails extends JFrame {
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		panel_2.setBackground(new Color(169, 169, 169));
+		panel_2.setBackground(new Color(70, 130, 180));
 		panel_2.setBounds(0, 0, 1370, 142);
 		contentPane.add(panel_2);
 		
@@ -108,7 +109,7 @@ public class UserDetails extends JFrame {
 		panel_2.add(lblNewLabel_1_3);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(211, 211, 211));
+		panel.setBackground(new Color(230, 230, 250));
 		panel.setBounds(258, 142, 1112, 576);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -309,6 +310,9 @@ public class UserDetails extends JFrame {
 		panel.add(lblPassword);
 		
 		btnSave = new JButton("Save");
+		btnSave.setIcon(new ImageIcon(UserDetails.class.getResource("/com/images/save.png")));
+		btnSave.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		btnSave.setForeground(new Color(255, 255, 255));
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(validation()) {
@@ -331,7 +335,7 @@ public class UserDetails extends JFrame {
 			}
 		});
 		btnSave.setVisible(false);
-		btnSave.setBackground(new Color(169, 169, 169));
+		btnSave.setBackground(new Color(51, 153, 204));
 		btnSave.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		btnSave.setBounds(386, 469, 136, 37);
 		panel.add(btnSave);
@@ -366,11 +370,13 @@ public class UserDetails extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
-		panel_1.setBackground(new Color(176, 224, 230));
+		panel_1.setBackground(new Color(176, 196, 222));
 		panel_1.setBounds(0, 142, 260, 574);
 		contentPane.add(panel_1);
 		
 		JButton btnEditBook = new JButton("Exit");
+		btnEditBook.setIcon(new ImageIcon(UserDetails.class.getResource("/com/images/exitBlack.png")));
+		btnEditBook.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnEditBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result;
@@ -383,11 +389,13 @@ public class UserDetails extends JFrame {
 			}
 		});
 		btnEditBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnEditBook.setBackground(new Color(169, 169, 169));
+		btnEditBook.setBackground(new Color(230, 230, 250));
 		btnEditBook.setBounds(32, 363, 189, 67);
 		panel_1.add(btnEditBook);
 		
 		JButton btnChangeDetails_1 = new JButton("Edit Details");
+		btnChangeDetails_1.setIcon(new ImageIcon(UserDetails.class.getResource("/com/images/edit-property-24.png")));
+		btnChangeDetails_1.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnChangeDetails_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textFirstName.setEditable(true);
@@ -405,11 +413,13 @@ public class UserDetails extends JFrame {
 			}
 		});
 		btnChangeDetails_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnChangeDetails_1.setBackground(new Color(169, 169, 169));
+		btnChangeDetails_1.setBackground(new Color(230, 230, 250));
 		btnChangeDetails_1.setBounds(32, 149, 189, 67);
 		panel_1.add(btnChangeDetails_1);
 		
 		JButton btnViewBooks = new JButton("Logout");
+		btnViewBooks.setIcon(new ImageIcon(UserDetails.class.getResource("/com/images/logout-24.png")));
+		btnViewBooks.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnViewBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result;
@@ -422,11 +432,13 @@ public class UserDetails extends JFrame {
 			}
 		});
 		btnViewBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnViewBooks.setBackground(new Color(169, 169, 169));
+		btnViewBooks.setBackground(new Color(230, 230, 250));
 		btnViewBooks.setBounds(32, 257, 189, 67);
 		panel_1.add(btnViewBooks);
 		
 		JButton btnHome = new JButton("Home");
+		btnHome.setIcon(new ImageIcon(UserDetails.class.getResource("/com/images/house-24.png")));
+		btnHome.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				HomePage frame = new HomePage();
@@ -435,7 +447,7 @@ public class UserDetails extends JFrame {
 			}
 		});
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnHome.setBackground(new Color(169, 169, 169));
+		btnHome.setBackground(new Color(230, 230, 250));
 		btnHome.setBounds(32, 42, 189, 67);
 		panel_1.add(btnHome);
 		

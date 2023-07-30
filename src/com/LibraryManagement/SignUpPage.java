@@ -35,6 +35,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
+import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class SignUpPage extends JPanel{
@@ -129,10 +130,10 @@ public class SignUpPage extends JPanel{
 			return false;
 		}
 		
-//		if(checkUsername()) {
-//			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Username already exist\nPlease try with another username.");
-//			return false;
-//		}
+		if(!checkUsername()) {
+			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Username already exist\nPlease try with another username.");
+			return false;
+		}
 		
 		if(!isValidPassword(password)) {
 			JOptionPane.showMessageDialog(frmLibraryManagementLogin, "Please enter valid password.");
@@ -285,7 +286,7 @@ public class SignUpPage extends JPanel{
 		panel.setFont(new Font("Times New Roman", Font.PLAIN, 11));
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignOnBaseline(true);
-		panel.setBackground(new Color(169, 169, 169));
+		panel.setBackground(new Color(70, 130, 180));
 		
 		JLabel lblNewLabel = new JLabel("Sign up");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
@@ -293,7 +294,7 @@ public class SignUpPage extends JPanel{
 		panel.add(lblNewLabel);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(211, 211, 211));
+		panel_1.setBackground(new Color(230, 230, 250));
 		panel_1.setLayout(null);
 
 		//frmLibraryManagementLogin.add(panel,BorderLayout.);
@@ -341,6 +342,7 @@ public class SignUpPage extends JPanel{
 		panel_1.add(lblNewLabel_1_6);
 
 		txtFirstName = new JTextField();
+		txtFirstName.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtFirstName.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		txtFirstName.setBackground(new Color(255, 255, 255));
 		txtFirstName.setBounds(195, 36, 215, 24);
@@ -348,6 +350,7 @@ public class SignUpPage extends JPanel{
 		txtFirstName.setColumns(10);
 
 		txtLastName = new JTextField();
+		txtLastName.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtLastName.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		txtLastName.setBackground(new Color(255, 255, 255));
 		txtLastName.setColumns(10);
@@ -355,6 +358,7 @@ public class SignUpPage extends JPanel{
 		panel_1.add(txtLastName);
 
 		txtUsername = new JTextField();
+		txtUsername.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtUsername.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -374,6 +378,7 @@ public class SignUpPage extends JPanel{
 		panel_1.add(txtUsername);
 
 		txtContactNumber = new JTextField();
+		txtContactNumber.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtContactNumber.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		txtContactNumber.addKeyListener(new KeyAdapter() {
 			@Override
@@ -395,6 +400,7 @@ public class SignUpPage extends JPanel{
 		panel_1.add(txtContactNumber);
 
 		txtPassword = new JPasswordField();
+		txtPassword.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtPassword.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
 		txtPassword.addKeyListener(new KeyAdapter() {
@@ -416,16 +422,19 @@ public class SignUpPage extends JPanel{
 		panel_1.add(txtPassword);
 
 		txtConfirmPassword = new JPasswordField();
+		txtConfirmPassword.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtConfirmPassword.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		txtConfirmPassword.setBackground(new Color(255, 255, 255));
 		txtConfirmPassword.setBounds(195, 176, 215, 24);
 		panel_1.add(txtConfirmPassword);
 
 		txtDateOfBirth = new JDateChooser();
+		txtDateOfBirth.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(100, 149, 237), new Color(100, 149, 237), new Color(100, 149, 237), new Color(100, 149, 237)));
+		txtDateOfBirth.getCalendarButton().setBackground(new Color(255, 255, 255));
 		txtDateOfBirth.getCalendarButton().setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		txtDateOfBirth.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		txtDateOfBirth.setDateFormatString("dd-MM-yyyy");
-		txtDateOfBirth.setBackground(new Color(250, 250, 210));
+		txtDateOfBirth.setBackground(new Color(255, 255, 255));
 		txtDateOfBirth.setBounds(195, 211, 215, 24);
 		panel_1.add(txtDateOfBirth);
 		JButton btnSignUp = new JButton("Signup");
@@ -439,7 +448,7 @@ public class SignUpPage extends JPanel{
 		});
 		btnSignUp.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnSignUp.setForeground(new Color(255, 255, 255));
-		btnSignUp.setBackground(new Color(128, 128, 128));
+		btnSignUp.setBackground(new Color(70, 130, 180));
 		btnSignUp.setBounds(280, 385, 130, 32);
 		panel_1.add(btnSignUp);
 
@@ -454,7 +463,7 @@ public class SignUpPage extends JPanel{
 		});
 		btnLogin.setForeground(Color.WHITE);
 		btnLogin.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnLogin.setBackground(new Color(128, 128, 128));
+		btnLogin.setBackground(new Color(70, 130, 180));
 		btnLogin.setBounds(541, 67, 130, 32);
 		panel_1.add(btnLogin);
 
@@ -493,10 +502,12 @@ public class SignUpPage extends JPanel{
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(76, Short.MAX_VALUE)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(66)
-					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(429, Short.MAX_VALUE))
 		);
 		
 		JButton btnExit = new JButton("Exit");
@@ -512,7 +523,7 @@ public class SignUpPage extends JPanel{
 		});
 		btnExit.setForeground(Color.WHITE);
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnExit.setBackground(Color.GRAY);
+		btnExit.setBackground(new Color(70, 130, 180));
 		btnExit.setBounds(541, 385, 131, 33);
 		panel_1.add(btnExit);
 		
@@ -529,13 +540,16 @@ public class SignUpPage extends JPanel{
 		panel_1.add(lblNewLabel_1_6_2);
 		
 		txtAnswer = new JTextField();
+		txtAnswer.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(100, 149, 237), new Color(100, 149, 237), null, new Color(100, 149, 237)));
 		txtAnswer.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		txtAnswer.setColumns(10);
-		txtAnswer.setBackground(Color.WHITE);
+		txtAnswer.setBackground(new Color(255, 255, 255));
 		txtAnswer.setBounds(195, 319, 320, 24);
 		panel_1.add(txtAnswer);
 		
 		comboBoxQuestions = new JComboBox();
+		comboBoxQuestions.setBorder(null);
+		comboBoxQuestions.setBackground(new Color(255, 255, 255));
 		comboBoxQuestions.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		comboBoxQuestions.setModel(new DefaultComboBoxModel(new String[] {"", "Your favorite movie?", "Your favorite food?", "Your favourite restaurant?", "What is your favorite sport?", "What is the first name of your favorite uncle?", "What is your oldest cousin's name?", "Mother's maiden name?", "What is the first name of your favorite aunt?", "Where did you spend your childhood summers?", "What is your skin color?", "What was the last name of your favorite teacher?", "What was the last name of your childhood friend?", "What was your favorite food as a child?", "What was the last name of your first boss?", "Where did you meet your spouse?", "What is the name of your first shcool?", "What is the name of the hospital you were born?", "What is your main frequent flier number?", "What was the model of your first car?", "What was the name of your favorite childhood pet?"}));
 		comboBoxQuestions.setBounds(195, 281, 215, 25);

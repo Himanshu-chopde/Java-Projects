@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.SwingConstants;
 import java.awt.Component;
+import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class LoginPage extends JFrame {
@@ -238,7 +237,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		setContentPane(contentPane);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(169, 169, 169));
+		panel.setBackground(new Color(70, 130, 180));
 
 		panel.setLayout(null);
 		JLabel lblLogin = new JLabel("Login");
@@ -250,7 +249,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		panel.add(lblLogin);
 
 		JPanel loginPanel = new JPanel();
-		loginPanel.setBackground(new Color(211, 211, 211));
+		loginPanel.setBackground(new Color(230, 230, 250));
 		loginPanel.setLayout(null);
 
 		lblUsername = new JLabel("Enter Username      :");
@@ -266,6 +265,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		loginPanel.add(lblPassword);
 
 		txtUsername = new JTextField();
+		txtUsername.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), null, new Color(30, 144, 255)));
 		txtUsername.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		txtUsername.setColumns(10);
 		txtUsername.setBackground(Color.WHITE);
@@ -273,6 +273,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		loginPanel.add(txtUsername);
 
 		txtPassword = new JPasswordField();
+		txtPassword.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), null, new Color(30, 144, 255)));
 		txtPassword.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		txtPassword.setBounds(313, 130, 215, 24);
 		loginPanel.add(txtPassword);
@@ -335,7 +336,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		});
 		btnLogin.setForeground(Color.WHITE);
 		btnLogin.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnLogin.setBackground(Color.GRAY);
+		btnLogin.setBackground(new Color(70, 130, 180));
 		btnLogin.setBounds(297, 253, 131, 33);
 		loginPanel.add(btnLogin);
 
@@ -382,7 +383,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		});
 		btnSignup.setForeground(Color.WHITE);
 		btnSignup.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnSignup.setBackground(Color.GRAY);
+		btnSignup.setBackground(new Color(70, 130, 180));
 		btnSignup.setBounds(123, 253, 131, 33);
 		loginPanel.add(btnSignup);
 
@@ -458,7 +459,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		});
 		btnExit.setForeground(Color.WHITE);
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnExit.setBackground(Color.GRAY);
+		btnExit.setBackground(new Color(70, 130, 180));
 		btnExit.setBounds(488, 253, 131, 33);
 		loginPanel.add(btnExit);
 
@@ -479,7 +480,8 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 						.addContainerGap()));
 		
 		btnForgotPassword = new JButton("Forgot Password");
-		btnForgotPassword.setBackground(new Color(192, 192, 192));
+		btnForgotPassword.setForeground(new Color(248, 248, 255));
+		btnForgotPassword.setBackground(new Color(70, 130, 180));
 		btnForgotPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showPasswordf = false;
@@ -546,6 +548,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		loginPanel.add(lblEnterSecurityQuestion);
 		
 		txtResetPassword = new JPasswordField();
+		txtResetPassword.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), null, new Color(30, 144, 255)));
 		txtResetPassword.setVisible(false);
 		txtResetPassword.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
@@ -568,6 +571,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		loginPanel.add(txtResetPassword);
 
 		txtConfirmPassword = new JPasswordField();
+		txtConfirmPassword.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), null, new Color(30, 144, 255)));
 		txtConfirmPassword.setVisible(false);
 		txtConfirmPassword.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		txtConfirmPassword.setBackground(new Color(255, 255, 255));
@@ -575,6 +579,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		loginPanel.add(txtConfirmPassword);
 		
 		txtAnswer = new JTextField();
+		txtAnswer.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), null, new Color(30, 144, 255)));
 		txtAnswer.setVisible(false);
 		txtAnswer.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		txtAnswer.setColumns(10);
@@ -611,6 +616,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 		loginPanel.add(lblConfirmPassword);
 		
 		txtUsername_1 = new JTextField();
+		txtUsername_1.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), null, new Color(30, 144, 255)));
 		txtUsername_1.setVisible(false);
 		txtUsername_1.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		txtUsername_1.setColumns(10);
@@ -650,7 +656,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 				showPasswordf = !showPasswordf;
 			}
 		});
-		btnHidePassword.setBorder(new LineBorder(new Color(119, 136, 153)));
+		btnHidePassword.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), new Color(30, 144, 255), new Color(30, 144, 255)));
 		btnHidePassword.setBackground(new Color(255, 255, 255));
 		btnHidePassword.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
 		btnHidePassword.setBounds(527, 130, 26, 23);
@@ -679,7 +685,7 @@ String username, password, question, answer,DBQuestion,DBAnswer, username_1,pass
 				showPassword_1 = !showPassword_1;
 			}
 		});
-		btnHidePassword_1.setBorder(new LineBorder(new Color(119, 136, 153)));
+		btnHidePassword_1.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(30, 144, 255), new Color(30, 144, 255), new Color(30, 144, 255), new Color(30, 144, 255)));
 		btnHidePassword_1.setBackground(new Color(255, 255, 255));
 		btnHidePassword_1.setIcon(new ImageIcon(SignUpPage.class.getResource("/com/images/showPassword.png")));
 		btnHidePassword_1.setBounds(527, 79, 26, 24);

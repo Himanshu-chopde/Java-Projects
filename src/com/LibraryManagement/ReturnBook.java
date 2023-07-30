@@ -42,6 +42,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class ReturnBook extends JFrame {
@@ -252,12 +253,13 @@ public class ReturnBook extends JFrame {
 			String studentId = (String) comboBoxStudentId.getItemAt(comboBoxStudentId.getSelectedIndex());
 			String bookId = (String) comboBoxBookId.getItemAt(comboBoxBookId.getSelectedIndex());
 			String issueDate = textIssueDate.getText();
+			Date d = null;
 			try {
-				Date d = new SimpleDateFormat("dd/MM/yyyy").parse(issueDate);
-				issueDate = new SimpleDateFormat("yyyy-MM-dd").format(d);
+				d = new SimpleDateFormat("dd/MM/yyyy").parse(issueDate);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+			issueDate = new SimpleDateFormat("yyyy-MM-dd").format(d);
 			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
 			LocalDateTime now = LocalDateTime.now();
@@ -284,6 +286,7 @@ public class ReturnBook extends JFrame {
 				int f1 = stmt.executeUpdate();
 				
 				if (f > 0 && f1 > 0) {
+					
 					updateDetails();
 					JOptionPane.showMessageDialog(this, "Record updated successfully");
 				}
@@ -303,6 +306,7 @@ public class ReturnBook extends JFrame {
 			bookQuantity++;
 			String studentId = (String) comboBoxStudentId.getItemAt(comboBoxStudentId.getSelectedIndex());
 			String bookId = (String) comboBoxBookId.getItemAt(comboBoxBookId.getSelectedIndex());
+			
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libraryManagementSystem", "root",
@@ -399,7 +403,7 @@ public class ReturnBook extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(211, 211, 211));
+		panel_1.setBackground(new Color(230, 230, 250));
 		panel_1.setBounds(258, 141, 1112, 574);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
@@ -461,7 +465,10 @@ public class ReturnBook extends JFrame {
 		panel_1.add(textStudentDepartment);
 		
 		btnIssue = new JButton("Return Book");
-		btnIssue.setBounds(467, 436, 133, 46);
+		btnIssue.setIcon(new ImageIcon(ReturnBook.class.getResource("/com/images/return_book.png")));
+		btnIssue.setForeground(new Color(255, 255, 255));
+		btnIssue.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		btnIssue.setBounds(467, 436, 151, 46);
 		btnIssue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(comboBoxStudentId.getSelectedIndex() == 0) {
@@ -481,7 +488,7 @@ public class ReturnBook extends JFrame {
 			}
 		});
 		btnIssue.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnIssue.setBackground(new Color(169, 169, 169));
+		btnIssue.setBackground(new Color(51, 153, 204));
 		panel_1.add(btnIssue);
 		
 		JLabel lblEditionMsg = new JLabel("");
@@ -680,7 +687,7 @@ public class ReturnBook extends JFrame {
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		panel_2.setBackground(new Color(169, 169, 169));
+		panel_2.setBackground(new Color(70, 130, 180));
 		panel_2.setBounds(0, 0, 1370, 142);
 		contentPane.add(panel_2);
 		
@@ -693,11 +700,13 @@ public class ReturnBook extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(176, 224, 230));
+		panel.setBackground(new Color(176, 196, 222));
 		panel.setBounds(0, 141, 260, 574);
 		contentPane.add(panel);
 		
 		JButton btnHome = new JButton("Home");
+		btnHome.setIcon(new ImageIcon(ReturnBook.class.getResource("/com/images/house-24.png")));
+		btnHome.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				HomePage home=new HomePage();
@@ -706,11 +715,13 @@ public class ReturnBook extends JFrame {
 			}
 		});
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnHome.setBackground(new Color(169, 169, 169));
+		btnHome.setBackground(new Color(230, 230, 250));
 		btnHome.setBounds(32, 48, 189, 67);
 		panel.add(btnHome);
 		
 		JButton btnSelectStudent = new JButton("Select Student");
+		btnSelectStudent.setIcon(new ImageIcon(ReturnBook.class.getResource("/com/images/student24.png")));
+		btnSelectStudent.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnSelectStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getStudentDataFromDatabase();
@@ -719,11 +730,13 @@ public class ReturnBook extends JFrame {
 			}
 		});
 		btnSelectStudent.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnSelectStudent.setBackground(new Color(169, 169, 169));
+		btnSelectStudent.setBackground(new Color(230, 230, 250));
 		btnSelectStudent.setBounds(32, 176, 189, 67);
 		panel.add(btnSelectStudent);
 		
 		JButton btnSelectBook = new JButton("Select Book");
+		btnSelectBook.setIcon(new ImageIcon(ReturnBook.class.getResource("/com/images/books-24.png")));
+		btnSelectBook.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnSelectBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getBookDataFromDatabase();
@@ -733,11 +746,13 @@ public class ReturnBook extends JFrame {
 			}
 		});
 		btnSelectBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnSelectBook.setBackground(new Color(169, 169, 169));
+		btnSelectBook.setBackground(new Color(230, 230, 250));
 		btnSelectBook.setBounds(32, 292, 189, 67);
 		panel.add(btnSelectBook);
 		
 		JButton btnClear = new JButton("Clear");
+		btnClear.setIcon(new ImageIcon(ReturnBook.class.getResource("/com/images/x-mark-4-24.png")));
+		btnClear.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				comboBoxStudentId.setSelectedIndex(0);
@@ -745,7 +760,7 @@ public class ReturnBook extends JFrame {
 			}
 		});
 		btnClear.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnClear.setBackground(new Color(169, 169, 169));
+		btnClear.setBackground(new Color(230, 230, 250));
 		btnClear.setBounds(32, 426, 189, 67);
 		panel.add(btnClear);
 	}

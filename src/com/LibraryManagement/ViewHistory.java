@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -39,6 +40,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class ViewHistory extends JFrame {
@@ -52,7 +54,7 @@ public class ViewHistory extends JFrame {
 	private JToggleButton tglbtnSearchByDate;
 	private JDateChooser txtDateFrom;
 	private JDateChooser txtDateTo;
-	private JButton btnDateTo;
+	private JButton btnPrint;
 	private Date fromDate, toDate;
 
 	/**
@@ -87,7 +89,7 @@ public class ViewHistory extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(211, 211, 211));
+		panel_1.setBackground(new Color(230, 230, 250));
 		panel_1.setBounds(0, 142, 1370, 574);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
@@ -95,7 +97,7 @@ public class ViewHistory extends JFrame {
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		panel_2.setBackground(new Color(169, 169, 169));
+		panel_2.setBackground(new Color(70, 130, 180));
 		panel_2.setBounds(0, 0, 1370, 142);
 		contentPane.add(panel_2);
 
@@ -130,6 +132,8 @@ public class ViewHistory extends JFrame {
 		table.setAutoCreateRowSorter(true);
 
 		JButton btnHome = new JButton("Home");
+		btnHome.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		btnHome.setForeground(new Color(255, 255, 255));
 		btnHome.setBounds(31, 11, 159, 47);
 		panel_1.add(btnHome);
 		btnHome.addActionListener(new ActionListener() {
@@ -140,9 +144,11 @@ public class ViewHistory extends JFrame {
 			}
 		});
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnHome.setBackground(new Color(169, 169, 169));
+		btnHome.setBackground(new Color(51, 153, 204));
 
 		tglbtnIssuedBooks = new JToggleButton("Issued Books");
+		tglbtnIssuedBooks.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		tglbtnIssuedBooks.setForeground(new Color(255, 255, 255));
 		tglbtnIssuedBooks.setBounds(200, 11, 159, 47);
 		panel_1.add(tglbtnIssuedBooks);
 		tglbtnIssuedBooks.addActionListener(new ActionListener() {
@@ -157,9 +163,11 @@ public class ViewHistory extends JFrame {
 			}
 		});
 		tglbtnIssuedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		tglbtnIssuedBooks.setBackground(new Color(169, 169, 169));
+		tglbtnIssuedBooks.setBackground(new Color(51, 153, 204));
 
 		tglbtnReturnedBooks = new JToggleButton("Returned Books");
+		tglbtnReturnedBooks.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		tglbtnReturnedBooks.setForeground(new Color(255, 255, 255));
 		tglbtnReturnedBooks.setBounds(369, 11, 160, 47);
 		panel_1.add(tglbtnReturnedBooks);
 		tglbtnReturnedBooks.addActionListener(new ActionListener() {
@@ -173,7 +181,7 @@ public class ViewHistory extends JFrame {
 				}
 			}
 		});
-		tglbtnReturnedBooks.setBackground(new Color(169, 169, 169));
+		tglbtnReturnedBooks.setBackground(new Color(51, 153, 204));
 		tglbtnReturnedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
 		JButton btnNewButton = new JButton("");
@@ -228,6 +236,8 @@ public class ViewHistory extends JFrame {
 		panel_1.add(txtDateTo);
 
 		tglbtnSearchByDate = new JToggleButton("Search By Date");
+		tglbtnSearchByDate.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		tglbtnSearchByDate.setForeground(new Color(255, 255, 255));
 		tglbtnSearchByDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tglbtnReturnedBooks.setSelected(false);
@@ -244,7 +254,7 @@ public class ViewHistory extends JFrame {
 			}
 		});
 		tglbtnSearchByDate.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		tglbtnSearchByDate.setBackground(new Color(169, 169, 169));
+		tglbtnSearchByDate.setBackground(new Color(51, 153, 204));
 		tglbtnSearchByDate.setBounds(539, 11, 160, 47);
 		panel_1.add(tglbtnSearchByDate);
 
@@ -258,11 +268,28 @@ public class ViewHistory extends JFrame {
 		lblTo.setBounds(877, 25, 24, 24);
 		panel_1.add(lblTo);
 
-		btnDateTo = new JButton("Print");
-		btnDateTo.setBackground(new Color(169, 169, 169));
-		btnDateTo.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnDateTo.setBounds(1263, 11, 76, 47);
-		panel_1.add(btnDateTo);
+		btnPrint = new JButton("Print");
+		btnPrint.setIcon(new ImageIcon(ViewHistory.class.getResource("/com/images/printer-.png")));
+		btnPrint.setBorder(new MatteBorder(1, 1, 3, 3, (Color) new Color(0, 0, 255)));
+		btnPrint.setForeground(new Color(255, 255, 255));
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				MessageFormat header = new MessageFormat("Issued and Returned Book Details");
+				MessageFormat footer = new MessageFormat("page {0,number,Integer}");
+				
+				try {
+					table.print(JTable.PrintMode.FIT_WIDTH,header,footer);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				
+			}
+		});
+		btnPrint.setBackground(new Color(51, 153, 204));
+		btnPrint.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnPrint.setBounds(1263, 11, 76, 47);
+		panel_1.add(btnPrint);
 
 		JTableHeader tableHeader = table.getTableHeader();
 		tableHeader.setFont(new Font("Times New Roman", Font.PLAIN, 20));

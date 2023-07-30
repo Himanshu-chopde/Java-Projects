@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.MessageFormat;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,6 +36,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class ViewBook extends JFrame {
@@ -78,7 +80,7 @@ public class ViewBook extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(211, 211, 211));
+		panel_1.setBackground(new Color(230, 230, 250));
 		panel_1.setBounds(258, 142, 1112, 574);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
@@ -86,7 +88,7 @@ public class ViewBook extends JFrame {
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		panel_2.setBackground(new Color(169, 169, 169));
+		panel_2.setBackground(new Color(70, 130, 180));
 		panel_2.setBounds(0, 0, 1370, 142);
 		contentPane.add(panel_2);
 		
@@ -125,11 +127,13 @@ public class ViewBook extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(176, 224, 230));
+		panel.setBackground(new Color(176, 196, 222));
 		panel.setBounds(0, 142, 260, 574);
 		contentPane.add(panel);
 		
 		JButton btnHome = new JButton("Home");
+		btnHome.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/house-24.png")));
+		btnHome.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				HomePage home=new HomePage();
@@ -138,11 +142,14 @@ public class ViewBook extends JFrame {
 			}
 		});
 		btnHome.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnHome.setBackground(new Color(169, 169, 169));
-		btnHome.setBounds(32, 126, 189, 67);
+		btnHome.setBackground(new Color(230, 230, 250));
+		btnHome.setBounds(32, 116, 189, 67);
 		panel.add(btnHome);
 		
 		tglbtnAvailableBooks = new JToggleButton("Available Books");
+		tglbtnAvailableBooks.setIconTextGap(0);
+		tglbtnAvailableBooks.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/availablebooks32.png")));
+		tglbtnAvailableBooks.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		tglbtnAvailableBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tglbtnIssuedBooks.setSelected(false);
@@ -154,12 +161,15 @@ public class ViewBook extends JFrame {
 				}
 			}
 		});
-		tglbtnAvailableBooks.setBounds(32, 253, 189, 66);
+		tglbtnAvailableBooks.setBounds(32, 233, 189, 66);
 		panel.add(tglbtnAvailableBooks);
-		tglbtnAvailableBooks.setBackground(new Color(169, 169, 169));
+		tglbtnAvailableBooks.setBackground(new Color(230, 230, 250));
 		tglbtnAvailableBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
 		tglbtnIssuedBooks = new JToggleButton("Issued Books");
+		tglbtnIssuedBooks.setIconTextGap(0);
+		tglbtnIssuedBooks.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/issuedBooks32.png")));
+		tglbtnIssuedBooks.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
 		tglbtnIssuedBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tglbtnAvailableBooks.setSelected(false);
@@ -172,8 +182,8 @@ public class ViewBook extends JFrame {
 			}
 		});
 		tglbtnIssuedBooks.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		tglbtnIssuedBooks.setBackground(new Color(169, 169, 169));
-		tglbtnIssuedBooks.setBounds(32, 376, 189, 66);
+		tglbtnIssuedBooks.setBackground(new Color(230, 230, 250));
+		tglbtnIssuedBooks.setBounds(32, 354, 189, 66);
 		panel.add(tglbtnIssuedBooks);
 		
 		textSearchInTable = new JTextField("Search...");
@@ -205,6 +215,27 @@ public class ViewBook extends JFrame {
 		btnNewButton.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/search.png")));
 		btnNewButton.setBounds(32, 33, 35, 38);
 		panel.add(btnNewButton);
+		
+		JButton btnPrint = new JButton("Print");
+		btnPrint.setIconTextGap(8);
+		btnPrint.setIcon(new ImageIcon(ViewBook.class.getResource("/com/images/printer-24.png")));
+		btnPrint.setBorder(new MatteBorder(1, 1, 5, 5, (Color) new Color(102, 111, 255)));
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MessageFormat header = new MessageFormat("Book Details");
+				MessageFormat footer = new MessageFormat("page {0,number,Integer}");
+				
+				try {
+					table.print(JTable.PrintMode.FIT_WIDTH,header,footer);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
+		btnPrint.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnPrint.setBackground(new Color(230, 230, 250));
+		btnPrint.setBounds(32, 470, 189, 66);
+		panel.add(btnPrint);
 		
 		getBookDataFromDatabase();
 	}

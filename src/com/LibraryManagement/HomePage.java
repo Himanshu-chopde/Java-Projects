@@ -55,7 +55,7 @@ public class HomePage extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 1370, 142);
 		panel.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		panel.setBackground(new Color(169, 169, 169));
+		panel.setBackground(new Color(70, 130, 180));
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("  Home");
@@ -69,11 +69,13 @@ public class HomePage extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 140, 1370, 573);
-		panel_1.setBackground(new Color(211, 211, 211));
+		panel_1.setBackground(new Color(230, 230, 250));
 		panel_1.setLayout(null);
 		contentPane.add(panel_1);
 		
 		JButton btnIssueBook = new JButton("Issue Books");
+		btnIssueBook.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/issue_book.png")));
+		btnIssueBook.setForeground(new Color(255, 255, 255));
 		btnIssueBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -86,11 +88,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnIssueBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnIssueBook.setBackground(new Color(169, 169, 169));
+		btnIssueBook.setBackground(new Color(70, 130, 180));
 		btnIssueBook.setBounds(592, 34, 189, 113);
 		panel_1.add(btnIssueBook);
 		
 		JButton btnReturnBook = new JButton("Return Books");
+		btnReturnBook.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/return_book.png")));
+		btnReturnBook.setForeground(new Color(255, 255, 255));
 		btnReturnBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ReturnBook frame = new ReturnBook();
@@ -99,11 +103,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnReturnBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnReturnBook.setBackground(new Color(169, 169, 169));
+		btnReturnBook.setBackground(new Color(70, 130, 180));
 		btnReturnBook.setBounds(899, 34, 189, 113);
 		panel_1.add(btnReturnBook);
 		
 		JButton btnAddBook = new JButton("Add Books");
+		btnAddBook.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/plus.png")));
+		btnAddBook.setForeground(new Color(255, 255, 255));
 		btnAddBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddBook frame = new AddBook();
@@ -112,11 +118,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnAddBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnAddBook.setBackground(new Color(169, 169, 169));
+		btnAddBook.setBackground(new Color(70, 130, 180));
 		btnAddBook.setBounds(277, 34, 189, 113);
 		panel_1.add(btnAddBook);
 		
 		JButton btnSignOut = new JButton("Sign out");
+		btnSignOut.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/signout.png")));
+		btnSignOut.setForeground(new Color(255, 255, 255));
 		btnSignOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result;
@@ -129,11 +137,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnSignOut.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnSignOut.setBackground(new Color(169, 169, 169));
+		btnSignOut.setBackground(new Color(70, 130, 180));
 		btnSignOut.setBounds(899, 407, 189, 113);
 		panel_1.add(btnSignOut);
 		
 		JButton btnViewBook = new JButton("View Books");
+		btnViewBook.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/view_books.png")));
+		btnViewBook.setForeground(new Color(255, 255, 255));
 		btnViewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ViewBook frame = new ViewBook();
@@ -142,11 +152,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnViewBook.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnViewBook.setBackground(new Color(169, 169, 169));
+		btnViewBook.setBackground(new Color(70, 130, 180));
 		btnViewBook.setBounds(277, 221, 189, 113);
 		panel_1.add(btnViewBook);
 		
 		JButton btnStudent = new JButton("Student");
+		btnStudent.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/student.png")));
+		btnStudent.setForeground(new Color(255, 255, 255));
 		btnStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Student frame = new Student();
@@ -155,11 +167,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnStudent.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnStudent.setBackground(new Color(169, 169, 169));
+		btnStudent.setBackground(new Color(70, 130, 180));
 		btnStudent.setBounds(592, 221, 189, 113);
 		panel_1.add(btnStudent);
 		
 		JButton btnViewHistory = new JButton("View History");
+		btnViewHistory.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/view_issued_books.png")));
+		btnViewHistory.setForeground(new Color(255, 255, 255));
 		btnViewHistory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ViewHistory frame = new ViewHistory();
@@ -168,11 +182,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnViewHistory.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnViewHistory.setBackground(new Color(169, 169, 169));
+		btnViewHistory.setBackground(new Color(70, 130, 180));
 		btnViewHistory.setBounds(899, 221, 189, 113);
 		panel_1.add(btnViewHistory);
 		
 		JButton btnExit = new JButton("Exit");
+		btnExit.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/exit.png")));
+		btnExit.setForeground(new Color(255, 255, 255));
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result;
@@ -185,11 +201,13 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnExit.setBackground(new Color(169, 169, 169));
+		btnExit.setBackground(new Color(70, 130, 180));
 		btnExit.setBounds(277, 407, 189, 113);
 		panel_1.add(btnExit);
 		
 		JButton btnLibrarianDetails = new JButton("User Details");
+		btnLibrarianDetails.setIcon(new ImageIcon(HomePage.class.getResource("/com/images/view all record.png")));
+		btnLibrarianDetails.setForeground(new Color(255, 255, 255));
 		btnLibrarianDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserDetails frame = new UserDetails();
@@ -198,7 +216,7 @@ public class HomePage extends JFrame {
 			}
 		});
 		btnLibrarianDetails.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		btnLibrarianDetails.setBackground(new Color(169, 169, 169));
+		btnLibrarianDetails.setBackground(new Color(70, 130, 180));
 		btnLibrarianDetails.setBounds(592, 407, 189, 113);
 		panel_1.add(btnLibrarianDetails);
 		contentPane.add(panel);
